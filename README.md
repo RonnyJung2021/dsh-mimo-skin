@@ -152,6 +152,25 @@
 给出一个可开关的条目。
 
 ```bash
+# 从 npm 装
+dsh plugin --profile web add dsh-mimo-skin
+
+# 直接从 GitHub 装：仓库里带着构建好的 lib/，装的人不需要本机再构建
+dsh plugin --profile web add https://github.com/RonnyJung2021/dsh-mimo-skin
+
+# 卸掉
+dsh plugin --profile web remove dsh-mimo-skin
+```
+
+> **GitHub 直装靠的是仓库里那份 `lib/`，别改成「装完再构建」。** pnpm 默认拒绝执行 git 依赖的
+> 构建脚本（`ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED`），除非本机在 profile 的
+> `pnpm-workspace.yaml` 里把这个包加进 `onlyBuiltDependencies`，而那个键要一字不差地抄 pnpm
+> 打印出来的形式、同一个 URL 两次还可能不一样。所以构建产物入库、构建挂在 `prepack` 上，
+> git 安装既不用构建也不用放行。
+
+本机开发时，也可以从工作目录直接装：
+
+```bash
 # 装进某个 profile（默认 $DSH_HOME 或 ~/.dsh，profile 名 web）
 node scripts/install-profile.mjs --home /path/to/home
 node scripts/install-profile.mjs --home /path/to/home --dry-run   # 只打印将改动什么
@@ -166,7 +185,7 @@ node scripts/install-profile.mjs --home /path/to/home --uninstall # 卸掉
 ## 跑起来看看
 
 ```bash
-npm install                                              # 装构建依赖，并自动跑一次 prepare 出 lib/
+npm install                                              # 可选，只为之后重建 lib/
 node scripts/install-profile.mjs                          # 装进 $DSH_HOME 或 ~/.dsh 的 web profile
 dsh web --no-open --port 4399                             # 起 DSH 自己的 Web GUI
 ```
@@ -187,14 +206,14 @@ DSH_DESKTOP_USER_DATA="$DSH_HOME" dsh web --no-open --port 4399
 ## 构建与测试
 
 ```bash
-npm install                       # esbuild + schemastery，并为构建后的 prepare 跑一次
+npm install                       # esbuild + schemastery（只为构建）
 node build.mjs                    # 两个半边都产出到 lib/
 node build.mjs --watch
 node --test test/*.test.mjs       # 101 项单测
 ```
 
-`lib/` 不入库（见 `.gitignore`），由 `prepare` 在 `npm install` 后自动产出；直接 `npm install` 完
-即可用，不必记着敲构建。
+**`lib/` 入库，改完 `src/` 请把重建后的 `lib/` 一起提交** —— GitHub 直装用的就是仓库里这份产物，
+装的人不跑构建。发布走 `prepack`，`npm publish` 会先重建一遍，所以发到 npm 的那份永远与 `src/` 同步。
 
 - `lib/index.js` 是自包含 ESM：`name` / `inject` / `apply` / `Config`（schemastery 校验器由
   `build.mjs` 就地内联进来），不需要旁边有 `node_modules`。只有 `@deepseek-ai/cordis` 保持外部，

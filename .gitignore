@@ -2,8 +2,10 @@
 node_modules/
 # Local npm cache, used when the machine's own cache is not writable.
 .npm-cache/
-# Build output; `prepare` regenerates it on `npm install`.
-lib/
+# `lib/` is deliberately NOT ignored: it is the payload, and a pnpm install from
+# the git URL cannot build it (pnpm refuses a git dependency's build scripts
+# unless the machine allowlists the package). Publishing rebuilds it through
+# `prepack`, so a `lib/` committed here is kept in step by `npm run build`.
 # Editor and OS residue.
 .vscode/
 .DS_Store

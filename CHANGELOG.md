@@ -4,6 +4,23 @@ All notable changes to this plugin are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the version
 follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-10-01
+
+### Fixed
+
+- **Installing straight from the git URL works again.** pnpm refuses to run a
+  git dependency's build scripts unless the machine allowlists the package, so
+  the `prepare` script that built `lib/` during the install was refused with
+  `ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED` — and because `lib/` was ignored by
+  git, the clone it refused to build carried no payload either. A git install
+  therefore could not succeed at all, while the npm tarball was fine because
+  `npm publish` had already run `prepare`.
+
+  `lib/` is now committed, and the build moved from `prepare` to `prepack`. A
+  git install has no build script to run, so it needs no allowlist entry, and
+  `npm publish` still rebuilds the payload from source. A registry install is
+  unchanged.
+
 ## [0.1.0] - 2026-10-01
 
 First release. It is a reskin of the DSH Web GUI after
