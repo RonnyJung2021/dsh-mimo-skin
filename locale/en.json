@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "title": "dsh-mimo-skin",
+    "description": "Repaints the whole GUI as mimo.xiaomi.com: warm off-white paper, hairline black rules, a serif reading face and the orange accent, with a dark shell that is the same syntax flipped to black paper and white ink. The shell, the accent and the scrolling mark are edited on this plugin's own card."
+  },
+  "panel": {
+    "noteReady": "These values live in the profile's configuration, so they survive a port change and a restart. Nothing is applied until you press Save, and Save validates first.",
+    "noteLoading": "Reading settings…",
+    "noteUnavailable": "This engine offers no settings interface: changes here last for this page only, and a new port falls back to the profile's values.",
+    "noteStaleHost": "The engine is still running an older Host half of this plugin (this page is already the new version). The Host half loads once, when the engine process starts, so reloading the page cannot replace it. The engine itself has to restart — stop it and start it again (that interrupts a running conversation, and this page has to be reopened). Afterwards these changes are saved to the profile.",
+    "save": "Save",
+    "reset": "Restore defaults",
+    "stateSaved": "The saved values are the ones the page is using",
+    "stateDirty": "There are unsaved changes",
+    "stateClean": "Edit a field to enable Save",
+    "stateLocked": "This form is not writable",
+    "fieldTheme": "Shell",
+    "fieldThemeHint": "Follows the product's own light/dark setting by default.",
+    "fieldThemeAuto": "Follow the product (default)",
+    "fieldThemeLight": "Light: warm paper and black ink",
+    "fieldThemeDark": "Dark: black paper and white ink",
+    "fieldAccent": "Accent",
+    "fieldAccentHint": "The reference site's accent is #ff6700. Fine as a fill, 2.74:1 as link text.",
+    "fieldAccentLight": "as text on light",
+    "fieldAccentDark": "as text on dark",
+    "fieldPattern": "Scrolling mark",
+    "fieldPatternHint": "The faint line scrolling across the top of the page. Off leaves a cleaner page.",
+    "fieldPatternOpacity": "Mark ink",
+    "fieldPatternOpacityHint": "0–1, 0.05 by default — the reference site's own wash.",
+    "fieldPatternText": "Mark text",
+    "fieldPatternTextHint": "What the mark scrolls. DEEPSEEK HARNESS by default.",
+    "errorTheme": "The shell is one of follow-the-product, light, or dark.",
+    "errorAccent": "The accent is written as #rgb or #rrggbb.",
+    "errorPatternOpacity": "The mark ink is between 0 and 1.",
+    "errorPatternText": "The mark text cannot be empty."
+  }
+}

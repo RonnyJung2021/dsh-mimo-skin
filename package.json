@@ -1,0 +1,67 @@
+{
+  "name": "dsh-mimo-skin",
+  "displayName": "DSH MiMo skin",
+  "description": "MiMo skin for the DSH Web GUI: the warm off-white editorial page, hairline black rules, serif reading face and orange accent of mimo.xiaomi.com",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "author": "dsh-mimo-skin contributors",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "skin",
+    "theme",
+    "mimo"
+  ],
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./locale/*": "./locale/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "locale",
+    "scripts",
+    "docs",
+    "cordis.patch.yml",
+    "build.mjs",
+    "src",
+    "test",
+    "package.json",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "scripts": {
+    "prepare": "node build.mjs",
+    "build": "node build.mjs",
+    "watch": "node build.mjs --watch",
+    "test": "node --test test/*.test.mjs",
+    "install-profile": "node scripts/install-profile.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-settings"
+      ]
+    }
+  },
+  "devDependencies": {
+    "@deepseek-ai/schemastery": "^3.18.4",
+    "esbuild": "^0.24.2"
+  }
+}

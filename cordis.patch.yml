@@ -1,0 +1,25 @@
+# Bundle patch for the MiMo skin.
+#
+# Installing this package as a profile bundle (`dsh plugin add`, or the Plugins
+# page) activates the row below at the bundle layer. The Host half publishes any
+# settings this row sets; the browser half installs the stylesheet, the scrolling
+# mark and the palette.
+#
+# Every field is optional. The defaults are: `auto` (follow the product's own
+# light/dark setting), the site's own accent `#ff6700`, the scrolling mark on at
+# 5% ink — the reference site's own value — and the text `DEEPSEEK HARNESS`.
+#
+# The five appearance fields below are also editable from the plugin's own card
+# in 侧栏「插件」→ dsh-mimo-skin, which is the shorter way to reach them: the card
+# writes them back here through the Settings service, and only when Save is
+# pressed.
+- insert:
+    - id: dsh-mimo-skin
+      name: dsh-mimo-skin
+      # config:
+      #   theme: auto                 # light | dark | auto
+      #   accent: '#ff6700'           # any #rrggbb; the text-safe variant is derived
+      #   pattern: true               # paint the scrolling mark across the top
+      #   patternOpacity: 0.05        # its ink strength, 0…1
+      #   patternText: DEEPSEEK HARNESS
+      #   enabled: true

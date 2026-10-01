@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "title": "dsh-mimo-skin",
+    "description": "把整个 GUI 换成 mimo.xiaomi.com 的样子：暖白纸面、黑色发丝分隔线、衬线阅读正文、橙色点缀，深色是同一套语法整体翻成黑纸白墨。配色外壳、强调色与顶部滚动字标都在本插件自己的卡片里改。"
+  },
+  "panel": {
+    "noteReady": "这些值写进 profile 的配置里：换端口、重启都还在。改完点「保存」才生效，保存前会先校验。",
+    "noteLoading": "正在读取设置…",
+    "noteUnavailable": "这台引擎没有提供设置接口：这里的改动只对当前页面有效，换端口就会回到 profile 里的值。",
+    "noteStaleHost": "引擎里跑的还是本插件的旧宿主半边（本页已是新版本）：宿主半边只在引擎进程启动时加载一次，刷新页面换不掉它。要重启的是引擎本身——停掉再重新起一次 DSH 引擎（会打断正在跑的对话，本页要重开）；重启后这里的改动就能存进 profile 配置。",
+    "save": "保存",
+    "reset": "恢复默认",
+    "stateSaved": "已保存的值就是页面正在用的值",
+    "stateDirty": "有改动还没保存",
+    "stateClean": "改了就会亮起「保存」",
+    "stateLocked": "这份表单当前不可写",
+    "fieldTheme": "配色外壳",
+    "fieldThemeHint": "默认跟随产品自己的明暗设置。",
+    "fieldThemeAuto": "跟随产品（默认）",
+    "fieldThemeLight": "浅色：暖白纸 + 黑墨",
+    "fieldThemeDark": "深色：黑纸 + 白墨",
+    "fieldAccent": "强调色",
+    "fieldAccentHint": "参照站的官网橙是 #ff6700。它做填充够，做链接文字只有 2.74:1。",
+    "fieldAccentLight": "浅色下当文字",
+    "fieldAccentDark": "深色下当文字",
+    "fieldPattern": "顶部滚动字标",
+    "fieldPatternHint": "页面顶端那条横向滚动的淡字，关掉页面更干净。",
+    "fieldPatternOpacity": "字标浓度",
+    "fieldPatternOpacityHint": "0–1，默认 0.05，也就是参照站自己的那层淡墨。",
+    "fieldPatternText": "字标文字",
+    "fieldPatternTextHint": "字标滚动的内容，默认 DEEPSEEK HARNESS。",
+    "errorTheme": "配色外壳只能取「跟随产品 / 浅色 / 深色」三个值之一。",
+    "errorAccent": "强调色要写成 #rgb 或 #rrggbb。",
+    "errorPatternOpacity": "字标浓度要落在 0 到 1 之间。",
+    "errorPatternText": "字标文字不能为空。"
+  }
+}
