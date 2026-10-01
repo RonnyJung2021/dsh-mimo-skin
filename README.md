@@ -1,16 +1,44 @@
 # dsh-mimo-skin
 
-一个给 DSH（DeepSeek Harness）Web GUI 用的**纯皮肤插件**：装上之后，整个界面换成
-[`mimo.xiaomi.com`](https://mimo.xiaomi.com/) 的样子 —— 暖白纸面、黑色发丝分隔线、衬线阅读正文、
-橙色点缀。它不新增任何业务功能，只改外观。
+**中文** | [English](README.en.md)
+
+![version](https://img.shields.io/badge/version-0.1.1-blue)
+![license](https://img.shields.io/badge/license-MIT-green)
+![DSH](https://img.shields.io/badge/DSH-%3E%3D0.1.5--rc.2-8b5cf6)
+![tests](https://img.shields.io/badge/tests-101%20passing-brightgreen)
+![node](https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24-339933)
+
+> 给 DSH Web GUI 换一套外观的**纯皮肤插件** —— 暖白纸面、黑色发丝分隔线、衬线阅读正文、橙色点缀。
+
+[安装](#安装) · [首次使用](#首次使用) · [English](README.en.md)
 
 <!-- 图片走仓库的绝对地址：npm 页面渲染 README 时解析不到相对路径，写成 docs/… 会裂成图框。 -->
 ![前后对比](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-compare.png)
 
-上图是同一台引擎、同一个页面：**上**是产品自己的外壳，**下**是套上皮肤之后。两张都是从一台
-真引擎、真浏览器上截的，不是示意图。
+上图是同一台引擎、同一个页面：**上**是产品自己的外壳，**下**是套上皮肤之后。两张都是从真引擎、
+真浏览器上截的，不是示意图。
 
-## 它做什么
+## 这是什么
+
+它把 DSH Web GUI 换成 [`mimo.xiaomi.com`](https://mimo.xiaomi.com/) 的样子。**不新增任何业务功能，只改外观**：
+侧栏、消息栏、输入卡、菜单、代码块一起换，深浅两套外壳都能用。给想让 DSH 变成暖白纸 +
+黑发丝 + 衬线正文这套编辑风的人用。
+
+### 实际表现
+
+| 项 | 值 |
+| --- | --- |
+| 产物体积 | `lib/index.js` 42.1 KB / `lib/client.js` 47.5 KB |
+| 改写的产品 token | 74 个 `--dsw-*` alias |
+| 皮肤自己的变量 | 16 个 `--dsh-mimo-*` |
+| 打包资源 / 运行时依赖 | **0**（不带字体文件、不带图片；只有引擎自己的 `@deepseek-ai/cordis` 保持外部） |
+| 单测 | 101 项，9 个文件，约 0.3 s 跑完 |
+
+## 主要功能
+
+### 整页换肤
+
+只经产品有文档的 `--dsw-*` alias token 换色，不改页面结构。
 
 | 部位 | 换成什么 | 来自参考站的什么 |
 | --- | --- | --- |
@@ -20,16 +48,13 @@
 | 次级 / 三级文字 | `#555` / `#888` | `--text-secondary` / `--text-tertiary` |
 | 分隔线 | 纯黑发丝 | 分区行 `border-bottom:1px solid #000`、卡片 `#00000012` |
 | 强调色 | 默认 `#ff6700`，可改 | `--accent` |
-| 正文与标题字体 | PT Serif 系衬线 | 正文 `PTSerif-Regular`、`--font-serif` |
-| 控件与标签字体 | MiSans/Ubuntu 系几何无衬线 | `--font-title`、`MiSans-Medium` |
-| 代码字体 | SF Mono 系等宽 | `--font-mono` |
+| 三套字体 | 正文 PT Serif 系衬线 / 控件 MiSans 系无衬线 / 代码 SF Mono 系等宽 | `--font-serif`、`--font-title`、`--font-mono` |
 | 圆角 | 3px | 内容卡 `border-radius:3px` |
 | 投影 | 参考站自己那套极浅投影 | `.grid-btn`、内容卡 |
-| 顶部字标 | 一条横向滚动的淡字，默认 `DEEPSEEK HARNESS` | hero 背后那层 5% 墨的字场 |
 
-## 两种外壳
+### 浅色 / 深色两套外壳
 
-浅色与深色都做了，而且**深色是同一套规则整体翻转**，不是「把背景调暗」：
+深色**是同一套规则整体翻转**，不是「把背景调暗」：
 
 | | 浅色 | 深色 |
 | --- | --- | --- |
@@ -43,210 +68,233 @@
 
 ![深色](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-dark.png)
 
-深色的口径是「同一套规则整体翻转」，不是「把背景调暗」：纸面从米白翻成纯黑、墨色翻成纯白、
-发丝线跟着反过来，强调色则提亮一档。顶部那条滚动字标的做法照的是一行 `nowrap` 文字走
-`translateX(0 → -50%)` 的走马灯。
+**配色外壳**默认 `auto`：跟随 DSH 自己的深浅色设置 —— 你在产品里切明暗，皮肤跟着重画。
 
-**配色外壳**默认 `auto`：跟随 DSH 自己的深浅色设置。你在产品里切明暗，皮肤跟着重画，明暗开关
-仍然在你手里。
+### 强调色：填充与文字分开算
 
-### 为什么强调色要分「填充」和「文字」两个值
-
-参考站的 `#ff6700` 在自己那张 `#faf7f5` 纸上只有 **2.74:1** 对比度 —— 做填充色块、按钮圆点、
-描边完全够，但做链接文字低于 AA 的 4.5:1。所以皮肤只让你**填一个颜色**（填充用），
-**当文字渲染的那一档是算出来的**：浅色下往黑里走、深色下往白里走，直到对比度达标为止。
-
-卡片里会把两个算出来的值直接显示给你看（含对比度）：
+参考站的 `#ff6700` 在自己那张 `#faf7f5` 纸上只有 **2.74:1** 对比度：做填充色块够了，做链接文字
+低于 AA 的 4.5:1。所以皮肤只让你**填一个颜色**（填充用），**当文字渲染的那一档是算出来的** ——
+浅色下往黑里走、深色下往白里走，直到对比度达标。默认 `#ff6700` 因此得到浅色 `#bf4d00`（4.60:1）、
+深色 `#ff6700`（7.19:1）。换别的颜色这两档会重算，AA 下限不会掉。
 
 ![插件卡片](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-card.png)
 
-默认 `#ff6700` 因此得到浅色 `#bf4d00`（4.6:1）、深色 `#ff6700`（7.2:1，纯黑上本来就够）。
-换成别的颜色，这两档会跟着重新算，AA 下限不会掉。
+卡片里会把两个算出来的值直接显示给你看（含对比度）。
 
-### 哪些 token **故意不动**
-
-- **状态色**（警示 / 成功 / 错误）、**toast**、**tooltip**、**diff 底色**、**气泡高亮**：DSH 自己在
-  `body[data-ds-dark-theme]` 上已经切了一套深色值。皮肤要是用 `!important` 把它们钉死，那套为
-  白纸调的琥珀色就会被原样搬到黑纸上。所以这些 token 皮肤一个都不声明，交给产品自己切。
-- **主按钮**：参考站自己的主按钮在浅色页是**黑色**、深色页是**白色**，橙色只做点缀。所以皮肤没有
-  改 `--dsw-alias-button-primary-fill`（「Add plugin」「Continue」这些仍是黑/白），只把
-  **信息填充**（`--dsw-alias-button-info-fill`，就是输入框右下那颗发送键）涂成强调色。
-- **关闭态开关**：产品把 `--dsw-alias-border-l3` 当关闭态**底色**用（不是描边），而这个 token 在皮肤里
-  是纯黑发丝 —— 不单独处理，关闭态会和打开态一样近黑。所以皮肤用 `--dsh-mimo-track` 重画关闭态；
-  打开态保持产品自己的品牌填充。
-
-![插件页](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-plugins.png)
-
-上图里 8 个官方插件的开关关闭态是浅灰洗，`dsh-mimo-skin` 自己的打开态是产品品牌填充。
-
-## 顶部滚动字标
+### 顶部滚动字标
 
 ![上方字标](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-light.png)
 
 一条固定在整个窗口顶端的横条，里面是一行横向滚动的淡字：
 
-- **滚动效果**照同项目「专注 / 休息计时」面板里的那一行做：内容是该文字的**两遍**，
-  动画 `translateX(0 → -50%)` 线性无限循环 —— 走完正好是一遍的距离，所以接缝处看不见跳。
-- 位置在**顶部、横向铺满**，`body` 被这条横条自身的高度顶下去，所以它有自己的**一行**，
-  不会压在侧栏或标题行上。
-- **浓度可调**（0–1，默认 `0.05`，也就是参考站自己的值），**可以整个关掉**（关掉时那一行也收回去，
-  不留空白）。
-- **文字可改**，默认 `DEEPSEEK HARNESS`。
-- 不挡鼠标、不可选中、`aria-hidden`；被别的东西挪走或被移除时会自动重新挂回来。
-- 在 macOS 桌面壳里这条横条自己声明 `-webkit-app-region: drag` —— 否则窗口顶端会被产品的
-  「非 `#root` 的 body 子节点一律 no-drag」规则挖掉一块，拖不动窗口。
+- **滚动**：内容是该文字的**两遍**，动画 `translateX(0 → -50%)` 线性无限循环，接缝处看不见跳。
+- **位置**：横向铺满，`body` 被它自身高度（默认 52px）顶下去，所以它有自己的**一行**，不压侧栏与标题行。
+- **可调**：浓度 0–1（默认 `0.05`，参考站自己的值）、文字可改（默认 `DEEPSEEK HARNESS`）、
+  可以整个关掉 —— 关掉时那一行也收回去，不留空白。
+- **不添乱**：不挡鼠标、不可选中、`aria-hidden`，被挪走或移除会自动挂回；在 macOS 桌面壳里
+  自己声明 `-webkit-app-region: drag`，否则窗口顶端会被产品的 no-drag 规则挖掉一块，拖不动。
 
-## 插件卡片
+### 故意不动的 token
 
-侧栏 **插件 → 已安装 → dsh-mimo-skin**，卡片下面是这个插件**自己的页面**，五个外观项：
+- **状态色 / toast / tooltip / diff 底色 / 气泡高亮**：DSH 自己在 `body[data-ds-dark-theme]` 上
+  已经切了一套深色值；钉死它们等于把为白纸调的琥珀色搬去黑纸，所以皮肤一个都不声明。
+- **主按钮**：参考站的主按钮浅色页是**黑**、深色页是**白**，橙色只做点缀 —— 所以
+  `--dsw-alias-button-primary-fill` 不动，只把**信息填充**（输入框右下那颗发送键）涂成强调色。
+- **关闭态开关**：产品把 `--dsw-alias-border-l3` 当关闭态**底色**用（不是描边），而它在皮肤里是
+  纯黑发丝；皮肤改用 `--dsh-mimo-track` 重画关闭态，打开态保持产品自己的品牌填充。
 
-| 项 | 说明 |
+![插件页](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-plugins.png)
+
+上图里 8 个官方插件的开关关闭态是浅灰洗，`dsh-mimo-skin` 自己的打开态是产品品牌填充。
+
+## 安装
+
+### 环境要求
+
+| 项 | 要求 |
 | --- | --- |
-| 配色外壳 | 跟随产品（默认）/ 浅色 / 深色 |
-| 强调色 | `#rgb` 或 `#rrggbb`，旁边有实时色块与算出来的两档文字色 |
-| 字标文字 | 顶部那条横条滚动的内容 |
-| 字标浓度 | 0–1 |
-| 顶部滚动字标 | 开关 |
+| DSH | `dsh-v0.1.5-rc.2` 起，向后兼容 |
+| Node.js | `^22.19.0 \|\| >=24.0.0`（只有本机自己构建时才需要） |
+| 系统 | 跟随 DSH Web GUI：macOS / Windows / Linux 都行 |
 
-- **改完点「保存」才生效**（不是改一项立刻重画），另有一颗「恢复默认」把所有外观项写回默认。
-- **保存前先校验**：颜色值要合法、浓度要落在 0–1、字标文字不能为空。不合法时「保存」是灰的，
-  字段下面直接说明哪里不行。
-- **改动能留住**：值写进 profile 的配置（`profiles/web/cordis.patch.yml` 的 `- id: dsh-mimo-skin` +
-  `config:`），换端口、重启、在面板与桌面窗口之间切换都还在。页面不留任何自己的副本。
-- 三套字体**不在卡片里**：皮肤不带字体文件，手填字体栈只会指向这台机器可能没装的字族，
-  所以字体栈固定用插件内置的那几套。
-- 卡片显示的是**包名** `dsh-mimo-skin`。
+### 方式一：命令
 
-## 两个半边
+```bash
+# 从 npm 装
+dsh plugin --profile web add dsh-mimo-skin
 
-| 半边 | 做什么 | 为什么 |
-| --- | --- | --- |
-| 宿主（`lib/index.js`） | 把行的五个外观字段整份写进 index 注入表；`Config` 把它们声明成 `.volatile()`，这一行于是成为「插件」页卡片背后的设置命名空间 | loader 行的 `config` 到不了页面（boot 图只带 id/inject/external）；卡片的写入又只能经设置服务落进 profile |
-| 浏览器（`lib/client.js`） | 装样式表、挂顶部字标、把调色板写到 `document.body`、渲染卡片 | 皮肤没有时间轴、没有会话状态，只需要设置 |
+# 或直接从 GitHub 装：仓库里带着构建好的 lib/，装的人不需要本机再构建
+dsh plugin --profile web add https://github.com/RonnyJung2021/dsh-mimo-skin
+```
 
-皮肤**不带任何打包资源**：所有颜色、线条、字标都是浏览器半边用 CSS 写出来的，所以宿主半边不注册
-路由、不需要 web server。
+> **GitHub 直装靠的是仓库里那份 `lib/`，别改成「装完再构建」。** pnpm 默认拒绝执行 git 依赖的
+> 构建脚本（`ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED`），除非本机在 profile 的
+> `pnpm-workspace.yaml` 里把包加进 `onlyBuiltDependencies`，而那个键要一字不差地抄 pnpm 打印出来
+> 的形式。所以构建产物入库、构建挂在 `prepack` 上，git 安装既不用构建也不用放行。
 
-## 行配置
+### 方式二：插件页
 
-所有字段可选，省略即用默认值，非法值逐字段回退——皮肤坏掉不该拖住 GUI 启动。
+侧栏 **插件** → **Add plugin** → 填 `dsh-mimo-skin`（或上面那个 GitHub 地址）→ **Install** →
+装完点 **Enable now**。
+
+### 本机开发时从工作目录装
+
+```bash
+node scripts/install-profile.mjs --home /path/to/home              # 装
+node scripts/install-profile.mjs --home /path/to/home --dry-run    # 只打印将改动什么
+node scripts/install-profile.mjs --home /path/to/home --uninstall  # 卸
+```
+
+它写三样东西（都是「插件」页自己会写的那三样）：profile `package.json` 的 `link:` 依赖与
+`dsh.profile.bundles` 里的包名、`node_modules/<包名>` 软链、`pnpm-lock.yaml` 的 importer 条目；
+顺带清掉老的 `file://` 式 `insert` 行（否则插件会被加载两次），每个被改的文件先备份成
+`*.bak-dsh-mimo-skin`。
+
+### 首次使用
+
+1. 按上面任一种方式装上并**启用**。
+2. 打开 GUI，侧栏 **插件 → 已安装 → dsh-mimo-skin**，卡片下面是这个插件**自己的设置页**。
+3. 改外观项，点 **保存**；页面立刻重画。
+
+### 卸载
+
+```bash
+dsh plugin --profile web remove dsh-mimo-skin
+```
+
+或在插件页对这个包点卸载（会先确认）。卸载后样式表、顶部字标与注入的调色板一起消失，页面回到
+产品自带外壳，**不留残余**。
+
+## 配置
+
+五个外观项加一个总开关，全部可选，省略即用默认值，非法值逐字段回退 —— 皮肤坏掉不该拖住 GUI 启动。
+
+| 项 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| `theme` | `light` \| `dark` \| `auto` | `auto` | 配色外壳；`auto` 跟随产品自己的深浅色设置 |
+| `accent` | `#rgb` / `#rrggbb` | `#ff6700` | 强调色（填充用）；当文字渲染的那一档自动算 |
+| `pattern` | boolean | `true` | 是否画顶部那条横向滚动的字标 |
+| `patternOpacity` | number 0–1 | `0.05` | 字标墨色浓度；参考站自己的值就是 0.05 |
+| `patternText` | string | `DEEPSEEK HARNESS` | 字标滚动的内容，不能为空 |
+| `enabled` | boolean | `true` | 皮肤是否渲染 |
+
+写在 profile 的 patch 里（`profiles/web/cordis.patch.yml`）：
 
 ```yaml
 - insert:
     - id: dsh-mimo-skin
       name: dsh-mimo-skin
       config:
-        theme: auto                 # light | dark | auto（默认 auto：跟随产品自己的深浅色）
-        accent: '#ff6700'           # 任意 #rrggbb；当文字渲染的那一档自动算
+        theme: auto                 # light | dark | auto
+        accent: '#ff6700'           # 任意 #rrggbb；当文字的那一档自动算
         pattern: true               # 是否画顶部那条滚动字标
-        patternOpacity: 0.05        # 字标墨色浓度 0…1（参考站自己的值就是 0.05）
+        patternOpacity: 0.05        # 字标墨色浓度 0…1
         patternText: DEEPSEEK HARNESS
         enabled: true
 ```
 
-这些值也可以不改 YAML，直接在卡片里改（见上）。
+也可以不改 YAML，直接在上面那张卡片里改：
 
-## 装 / 卸
+- **改完点「保存」才生效**（不是改一项立刻重画），另有一颗**「恢复默认」**把所有外观项写回默认。
+- **保存前先校验**：颜色值要合法、浓度要落在 0–1、字标文字不能为空。不合法时「保存」是灰的，
+  字段下面直接说明哪里不行。
+- **改动能留住**：值写进 profile 的配置，换端口、重启、在面板与桌面窗口之间切换都还在，页面不留副本。
+- 三套字体**不在卡片里**：皮肤不带字体文件，手填字体栈只会指向这台机器可能没装的字族，
+  所以字体栈固定用插件内置的那几套。
 
-插件以 **bundle** 的形式装进 profile：包本身声明了 `dsh.bundle.patch`，装完即生效，并在「插件」页
-给出一个可开关的条目。
+## 结构
 
-```bash
-# 从 npm 装
-dsh plugin --profile web add dsh-mimo-skin
-
-# 直接从 GitHub 装：仓库里带着构建好的 lib/，装的人不需要本机再构建
-dsh plugin --profile web add https://github.com/RonnyJung2021/dsh-mimo-skin
-
-# 卸掉
-dsh plugin --profile web remove dsh-mimo-skin
+```
+dsh-mimo-skin/
+├── lib/{index.js,client.js}  # 两个半边：宿主（自包含 ESM）+ 浏览器（module-table），都入库
+├── src/index.ts              # 宿主半边：发布设置、声明 Config
+├── src/config.ts             # 配置字段与逐字段回退
+├── src/color.ts              # 颜色解析、混合与 AA 对比度推导
+├── src/client/               # 浏览器半边：styles / palette / skin / marquee / settings / panel
+├── locale/{zh,en}.json       # 卡片文案，英文是回退语言
+├── test/                     # 101 项单测
+├── docs/                     # README 用的截图
+├── scripts/install-profile.mjs   # 装进 / 移出某个 profile
+├── build.mjs                 # esbuild 构建两个半边
+├── cordis.patch.yml          # bundle patch：装上即生效的那一行
+└── CHANGELOG.md / THIRD_PARTY_NOTICES.md / LICENSE
 ```
 
-> **GitHub 直装靠的是仓库里那份 `lib/`，别改成「装完再构建」。** pnpm 默认拒绝执行 git 依赖的
-> 构建脚本（`ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED`），除非本机在 profile 的
-> `pnpm-workspace.yaml` 里把这个包加进 `onlyBuiltDependencies`，而那个键要一字不差地抄 pnpm
-> 打印出来的形式、同一个 URL 两次还可能不一样。所以构建产物入库、构建挂在 `prepack` 上，
-> git 安装既不用构建也不用放行。
+### 两个半边
 
-本机开发时，也可以从工作目录直接装：
+| 半边 | 做什么 | 为什么这么分 |
+| --- | --- | --- |
+| 宿主（`lib/index.js`） | 把行的五个外观字段整份写进 index 注入表；`Config` 把它们声明成 `.volatile()`，这一行于是成为「插件」页卡片背后的设置命名空间 | loader 行的 `config` 到不了页面（boot 图只带 id/inject/external）；卡片的写入又只能经设置服务落进 profile |
+| 浏览器（`lib/client.js`） | 装样式表、挂顶部字标、把调色板写到 `document.body`、渲染卡片 | 皮肤没有时间轴、没有会话状态，只需要设置 |
 
-```bash
-# 装进某个 profile（默认 $DSH_HOME 或 ~/.dsh，profile 名 web）
-node scripts/install-profile.mjs --home /path/to/home
-node scripts/install-profile.mjs --home /path/to/home --dry-run   # 只打印将改动什么
-node scripts/install-profile.mjs --home /path/to/home --uninstall # 卸掉
-```
+皮肤**不带任何打包资源**：颜色、线条、字标都是浏览器半边用 CSS 写出来的，所以宿主半边不注册路由、不需要 web server。
 
-它写三样东西（都是「插件」页自己会写的那三样）：profile `package.json` 的 `link:` 依赖与
-`dsh.profile.bundles` 里的包名、`node_modules/<包名>` 软链、`pnpm-lock.yaml` 的 importer 条目；
-顺带把老的 `file://` 式 `insert` 行清掉（否则插件会被加载两次）。每个被改的文件都先备份成
-`*.bak-dsh-mimo-skin`。
+### 兼容性
 
-## 跑起来看看
+- 纯面向 DSH，不做跨宿主兼容；兼容下限 `dsh-v0.1.5-rc.2`，从这一版起向后兼容。
+- **不改页面结构**：除 `body` / `#root` 外只用产品有文档的钩子（`[data-composer-card]`、
+  `[data-menu-material]`、开关自己发布的 `role` / `aria-checked`），不依赖会过期的生成类名。
+
+### 开发
 
 ```bash
-npm install                                              # 可选，只为之后重建 lib/
-node scripts/install-profile.mjs                          # 装进 $DSH_HOME 或 ~/.dsh 的 web profile
-dsh web --no-open --port 4399                             # 起 DSH 自己的 Web GUI
+npm install                  # esbuild + schemastery，只为构建
+node build.mjs               # 两个半边都产出到 lib/
+node build.mjs --watch       # 改 src/ 就重建
+node --test test/*.test.mjs  # 101 项单测
 ```
 
-打开最后一条打印的那个带 `?token=` 的地址即可。
+**`lib/` 入库，改完 `src/` 请把重建后的 `lib/` 一起提交** —— GitHub 直装用的就是仓库里这份产物。
+发布走 `prepack`，`npm publish` 会先重建一遍，发到 npm 的那份永远与 `src/` 同步。
 
-想隔离在一边试，就把 `DSH_HOME` 指到别处再重复上面两步 —— 引擎的数据、profile 配置与端口都按
-home 分区，所以互不影响：
+改源码后：浏览器半边是**热更**的，宿主半边只在引擎进程启动时加载一次 —— 换宿主半边要重启引擎，不是刷新页面。
 
-```bash
-export DSH_HOME="$HOME/.dsh-scratch"
-DSH_DESKTOP_USER_DATA="$DSH_HOME" dsh web --no-open --port 4399
-```
+单测覆盖：颜色算术与 `readableOn` 的 AA 下限（用另一份独立实现的 WCAG 对比度来量，避免自证）、
+配置逐字段回退、外壳取值与选择、任选强调色都能算出达标的文字色、字标的两遍结构与自动挂回、
+样式表的 token 契约（含「不得出现生成式类名」「强调色不得变成主按钮填充」「状态色不得被钉死」
+「深色块必须在浅色块之后」「关闭态开关不得沿用黑发丝」等反向断言）、卸载后不留痕、
+卡片那侧的字段收窄与保存前校验，以及两份 `locale/` 词典逐键对齐。
 
-改源码后重建：`node build.mjs`（或 `node build.mjs --watch`）。浏览器半边是热更的，宿主半边只在
-引擎进程启动时加载一次 —— 换宿主半边要重启的是引擎，不是刷新页面。
+## FAQ
 
-## 构建与测试
+**装完界面没变？**
+先看插件页里 `dsh-mimo-skin` 这一行是不是打开的；再确认页面已经刷新。宿主半边只在引擎进程启动时
+加载一次，如果刚换过宿主半边，要重启的是 DSH 引擎本身。
 
-```bash
-npm install                       # esbuild + schemastery（只为构建）
-node build.mjs                    # 两个半边都产出到 lib/
-node build.mjs --watch
-node --test test/*.test.mjs       # 101 项单测
-```
+**为什么强调色当文字时不是官网的 `#ff6700`？**
+`#ff6700` 在 `#faf7f5` 上只有 2.74:1，低于 AA 的 4.5:1。皮肤选择保住对比度，所以文字那一档是
+算出来的（默认浅色 `#bf4d00`）。想完全照搬官网原值，就得接受链接对比度掉到 AA 以下。
 
-**`lib/` 入库，改完 `src/` 请把重建后的 `lib/` 一起提交** —— GitHub 直装用的就是仓库里这份产物，
-装的人不跑构建。发布走 `prepack`，`npm publish` 会先重建一遍，所以发到 npm 的那份永远与 `src/` 同步。
+**字体看起来不像官网？**
+皮肤**不带字体文件**，只声明字体栈，实际字形由这台机器已装的字体决定；没装时退到
+Noto Serif SC / 宋体 / Georgia。要 1:1 复刻得自带 woff2，那要先解决 MiSans 的授权。
 
-- `lib/index.js` 是自包含 ESM：`name` / `inject` / `apply` / `Config`（schemastery 校验器由
-  `build.mjs` 就地内联进来），不需要旁边有 `node_modules`。只有 `@deepseek-ai/cordis` 保持外部，
-  一台引擎里只能有一个 Cordis 实例。内联进来的第三方代码其许可声明写在
-  [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)，并由 `build.mjs` 附加到产物末尾。
-- `lib/client.js` 是 **module-table 方言**：`window.__ModuleLoader__.load({ id, factory })`，
-  只 `require` 平台种子模块；esbuild 的 CJS 产物由 `build.mjs` 包上这套信封，不要手改产物。
-- 单测覆盖：颜色算术与 `readableOn` 的 AA 下限（另一份独立实现的 WCAG 对比度来量，避免自证）、
-  配置逐字段回退、两个外壳的取值与选择、**任选强调色都能算出达标的文字色**、字标内容的两遍结构
-  与自动挂回、样式表的 token 契约（含「不得出现生成式类名」「强调色不得变成主按钮填充」
-  「状态色不得被钉死」「深色块必须在浅色块之后」「关闭态开关不得沿用黑发丝」「字标横条必须占一行」
-  等反向断言）、applier 的写入与跟随主题、卸载后不留痕、卡片那侧的字段收窄与保存前校验、
-  宿主半边把 volatile 引用解成取值再发布，以及两份 `locale/` 词典逐键对齐。
+**怎么升级？**
+插件不自动更新：先卸载再装新版本。
 
-## 已知取舍
+**深色为什么和官网深色截图不一样？**
+官网的 `.dark` 是 Rspress 未改的默认蓝灰，不能照抄。皮肤对齐的是官网深色版的纸色
+（`--rp-home-bg:#000`）加上「黑纸白墨、强调色提亮一档」这条规则。
 
-- **不带字体文件。** 皮肤只声明字体栈，实际字形由机器已装的字体决定；没装时退到
-  Noto Serif SC / 宋体 / Georgia。要 1:1 复刻参考站字形得自带 woff2，那要处理 MiSans 的授权。
-- **强调文字是算出来的，不是官网原值。** 官网 `#ff6700` 在它自己的纸上只有 2.74:1；
-  要完全照搬官网原值就得接受链接对比度掉到 AA 以下。皮肤选择保住对比度。
-- **深色是「参考站深色规则」而非「参考站深色截图」。** 官网的 `.dark` 是 Rspress 未改的默认蓝灰，
-  不能照抄；这里对齐的是官网深色版的纸色（`--rp-home-bg:#000`）加上「黑纸白墨、强调色提亮一档」这条规则。
-- **字标横条占了顶部一行。** 它把页面顶下去一个横条的高度（默认 52px），关掉即收回；
-  这么做是为了不压住产品的侧栏与标题行。
-- **0.5px 发丝线在 1x 屏上可能被渲染成 1px 或极淡。** 这是 DSH 自己画分隔线的方式，皮肤只是给它上色。
-- **不改页面结构。** 除 `body` / `#root` 外只用产品有文档的钩子（`[data-composer-card]`、
-  `[data-menu-material]`、开关自己发布的 `role`/`aria-checked`），不依赖会过期的生成类名。
+## Roadmap
 
-## 兼容
+- **已发布**：`v0.1.0` 首个版本；`v0.1.1` 让 git 直装可用（`lib/` 入库、构建从 `prepare` 挪到 `prepack`）。
+- **计划中**：暂无排期。候选是自带字体（需先解决 MiSans 授权），以及跟随参考站后续的改版。
 
-纯面向 DSH，不做跨宿主兼容；兼容下限 `dsh-v0.1.5-rc.2`，从这一版起向后兼容。
+细节见 [CHANGELOG.md](CHANGELOG.md)。
+
+## 贡献
+
+- 提 issue 请附上 DSH 版本、系统、复现步骤；界面问题带截图更好。
+- 提 PR 请保持单测全绿（`node --test test/*.test.mjs`），改了 `src/` 就一并提交重建后的 `lib/`。
+- 一处改动只做一件事，不加与本次无关的重构。
 
 ## 许可
 
-MIT，见 [LICENSE](LICENSE)。产物里内联的第三方代码其许可声明见
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。改动记录见 [CHANGELOG.md](CHANGELOG.md)。
+MIT，见 [LICENSE](LICENSE)。
+
+产物里内联的第三方代码（`@deepseek-ai/schemastery`，MIT）其许可声明见
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)，由 `build.mjs` 附加到产物末尾。
+
+视觉参考 [`mimo.xiaomi.com`](https://mimo.xiaomi.com/)；宿主平台
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)。改动记录见 [CHANGELOG.md](CHANGELOG.md)。
