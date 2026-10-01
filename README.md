@@ -4,7 +4,8 @@
 [`mimo.xiaomi.com`](https://mimo.xiaomi.com/) 的样子 —— 暖白纸面、黑色发丝分隔线、衬线阅读正文、
 橙色点缀。它不新增任何业务功能，只改外观。
 
-![前后对比](docs/preview-compare.png)
+<!-- 图片走仓库的绝对地址：npm 页面渲染 README 时解析不到相对路径，写成 docs/… 会裂成图框。 -->
+![前后对比](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-compare.png)
 
 上图是同一台引擎、同一个页面：**上**是产品自己的外壳，**下**是套上皮肤之后。两张都是从一台
 真引擎、真浏览器上截的，不是示意图。
@@ -40,7 +41,7 @@
 | 悬浮 / 按下 | 黑色 4% / 8% 洗 | 白色 7% / 12% 洗 |
 | 投影 | 黑 8% | 黑 50% |
 
-![深色](docs/preview-dark.png)
+![深色](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-dark.png)
 
 深色的口径是「同一套规则整体翻转」，不是「把背景调暗」：纸面从米白翻成纯黑、墨色翻成纯白、
 发丝线跟着反过来，强调色则提亮一档。顶部那条滚动字标的做法照的是一行 `nowrap` 文字走
@@ -57,7 +58,7 @@
 
 卡片里会把两个算出来的值直接显示给你看（含对比度）：
 
-![插件卡片](docs/preview-card.png)
+![插件卡片](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-card.png)
 
 默认 `#ff6700` 因此得到浅色 `#bf4d00`（4.6:1）、深色 `#ff6700`（7.2:1，纯黑上本来就够）。
 换成别的颜色，这两档会跟着重新算，AA 下限不会掉。
@@ -74,13 +75,13 @@
   是纯黑发丝 —— 不单独处理，关闭态会和打开态一样近黑。所以皮肤用 `--dsh-mimo-track` 重画关闭态；
   打开态保持产品自己的品牌填充。
 
-![插件页](docs/preview-plugins.png)
+![插件页](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-plugins.png)
 
 上图里 8 个官方插件的开关关闭态是浅灰洗，`dsh-mimo-skin` 自己的打开态是产品品牌填充。
 
 ## 顶部滚动字标
 
-![上方字标](docs/preview-light.png)
+![上方字标](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-light.png)
 
 一条固定在整个窗口顶端的横条，里面是一行横向滚动的淡字：
 

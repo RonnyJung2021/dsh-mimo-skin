@@ -3,9 +3,10 @@
 This package is MIT (see [LICENSE](LICENSE)). The built host bundle
 `lib/index.js` **inlines** the following MIT-licensed packages, so their
 copyright and permission notices are reproduced here and appended to that
-artifact by `build.mjs`. Nothing else third-party ends up in a build: the
-browser bundle `lib/client.js` reaches React only through the engine's own
-module table.
+artifact by `build.mjs`. The host bundle's source map, `lib/index.js.map`,
+carries their sources inline for the same reason and is covered by these same
+notices. Nothing else third-party ends up in a build: the browser bundle
+`lib/client.js` reaches React only through the engine's own module table.
 
 ## @deepseek-ai/schemastery 3.18.4
 

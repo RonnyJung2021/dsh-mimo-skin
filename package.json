@@ -14,6 +14,9 @@
     "mimo"
   ],
   "type": "module",
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
   "main": "lib/index.js",
   "exports": {
     ".": {
@@ -29,7 +32,6 @@
     "lib",
     "locale",
     "scripts",
-    "docs",
     "cordis.patch.yml",
     "build.mjs",
     "src",
@@ -45,7 +47,7 @@
     "watch": "node build.mjs --watch",
     "test": "node --test test/*.test.mjs",
     "install-profile": "node scripts/install-profile.mjs",
-    "prepublishOnly": "npm test && node build.mjs"
+    "prepublishOnly": "npm test"
   },
   "dsh": {
     "bundle": {

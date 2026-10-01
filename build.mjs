@@ -86,7 +86,15 @@ async function loadEsbuild() {
 
 const { build, context } = await loadEsbuild()
 
-/** esbuild options for the host half. */
+/**
+ * esbuild options for the host half.
+ * @returns the options; `sourcesContent` is on because the map is the only copy
+ * of the inlined packages: `@deepseek-ai/{schemastery,cosmokit}` are bundled in
+ * and are not files this package ships, so without their sources inline a
+ * developer stepping into the schema code would find nothing to open. This
+ * package's own `src/` does ship, and is carried inline too rather than left as
+ * the one kind of entry that resolves by path.
+ */
 function hostOptions() {
   return {
     entryPoints: [join(root, 'src', 'index.ts')],
@@ -96,6 +104,7 @@ function hostOptions() {
     platform: 'node',
     target: 'node22',
     sourcemap: true,
+    sourcesContent: true,
     external: ['@deepseek-ai/cordis'],
     footer: { js: legalFooter() },
     logLevel: 'info',
