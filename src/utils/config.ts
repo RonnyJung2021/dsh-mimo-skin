@@ -10,7 +10,16 @@
  * or unreadable.
  */
 
-import { DEFAULT_ACCENT, DEFAULT_ENABLED, DEFAULT_PATTERN, DEFAULT_PATTERN_OPACITY, DEFAULT_PATTERN_TEXT, DEFAULT_THEME } from '../constants/plugin.ts'
+import { PATTERN_HEIGHT_MAX, PATTERN_HEIGHT_MIN } from '../constants/config.ts'
+import {
+  DEFAULT_ACCENT,
+  DEFAULT_ENABLED,
+  DEFAULT_PATTERN,
+  DEFAULT_PATTERN_HEIGHT,
+  DEFAULT_PATTERN_OPACITY,
+  DEFAULT_PATTERN_TEXT,
+  DEFAULT_THEME,
+} from '../constants/plugin.ts'
 import { isTheme } from '../enums/theme.ts'
 import type { MimoConfig, MimoSettings } from '../types/config.ts'
 import { isColor } from './color.ts'
@@ -30,6 +39,7 @@ export function resolveSettings(config: MimoConfig | undefined): MimoSettings {
     pattern: raw.pattern === undefined ? DEFAULT_PATTERN : raw.pattern !== false,
     patternOpacity: numberOr(raw.patternOpacity, DEFAULT_PATTERN_OPACITY, 0, 1),
     patternText: nonBlankText(raw.patternText, DEFAULT_PATTERN_TEXT),
+    patternHeight: numberOr(raw.patternHeight, DEFAULT_PATTERN_HEIGHT, PATTERN_HEIGHT_MIN, PATTERN_HEIGHT_MAX),
     enabled: raw.enabled === undefined ? DEFAULT_ENABLED : raw.enabled !== false,
   }
 }

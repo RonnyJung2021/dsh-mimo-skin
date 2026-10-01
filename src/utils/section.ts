@@ -7,12 +7,12 @@
  * lists live in `constants/`, the form surface in `types/settings.ts`.
  */
 
-import { SECTION_FIELDS, type ErrorField, type SectionField } from '../constants/config.ts'
+import { PATTERN_HEIGHT_MAX, PATTERN_HEIGHT_MIN, SECTION_FIELDS, type ErrorField, type SectionField } from '../constants/config.ts'
 import { isTheme } from '../enums/theme.ts'
 import type { MimoSection, SettingsPathOp } from '../types/settings.ts'
 import { isColor } from './color.ts'
 import { resolveSettings } from './config.ts'
-import { isRecord, nonBlankText, numberWithin } from './value.ts'
+import { isRecord, isNumberWithin, nonBlankText, numberWithin } from './value.ts'
 
 /**
  * Defaults for the card's reset control, taken from the plugin's one default
@@ -28,6 +28,7 @@ export const SECTION_DEFAULTS: MimoSection = {
   pattern: DEFAULTS.pattern,
   patternOpacity: DEFAULTS.patternOpacity,
   patternText: DEFAULTS.patternText,
+  patternHeight: DEFAULTS.patternHeight,
 }
 
 /**
@@ -51,6 +52,8 @@ export function sectionOf(value: unknown): Partial<MimoSection> {
   if (typeof value.patternText === 'string' && value.patternText.trim() !== '') {
     section.patternText = value.patternText.trim()
   }
+  const patternHeight = numberWithin(value.patternHeight, PATTERN_HEIGHT_MIN, PATTERN_HEIGHT_MAX)
+  if (patternHeight !== undefined) section.patternHeight = patternHeight
   return section
 }
 
@@ -69,13 +72,11 @@ export function invalidFields(section: MimoSection): ErrorField[] {
   const invalid: ErrorField[] = []
   if (!isTheme(section.theme)) invalid.push('theme')
   if (!isColor(section.accent)) invalid.push('accent')
-  if (typeof section.patternOpacity !== 'number'
-    || !Number.isFinite(section.patternOpacity)
-    || section.patternOpacity < 0
-    || section.patternOpacity > 1) {
-    invalid.push('patternOpacity')
-  }
+  if (!isNumberWithin(section.patternOpacity, 0, 1)) invalid.push('patternOpacity')
   if (nonBlankText(section.patternText, '') === '') invalid.push('patternText')
+  if (!isNumberWithin(section.patternHeight, PATTERN_HEIGHT_MIN, PATTERN_HEIGHT_MAX)) {
+    invalid.push('patternHeight')
+  }
   return invalid
 }
 

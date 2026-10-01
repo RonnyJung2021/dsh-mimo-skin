@@ -5,7 +5,7 @@
 ![version](https://img.shields.io/badge/version-0.1.1-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 ![DSH](https://img.shields.io/badge/DSH-%3E%3D0.1.5--rc.2-8b5cf6)
-![tests](https://img.shields.io/badge/tests-101%20passing-brightgreen)
+![tests](https://img.shields.io/badge/tests-105%20passing-brightgreen)
 ![node](https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24-339933)
 
 > A **skin-only plugin** for the DSH Web GUI — warm off-white paper, black hairline rules,
@@ -31,11 +31,11 @@ warm-paper, hairline-rule, serif-prose editorial style.
 
 | Item | Value |
 | --- | --- |
-| Payload | `lib/index.js` 42.1 KB / `lib/client.js` 47.5 KB |
+| Payload | `lib/index.js` 43.3 KB / `lib/client.js` 50.5 KB |
 | Product tokens remapped | 74 `--dsw-*` aliases |
 | The skin's own variables | 16 `--dsh-mimo-*` |
 | Bundled assets / runtime deps | **0** (no font files, no images; only the engine's own `@deepseek-ai/cordis` stays external) |
-| Tests | 101 cases in 9 files, about 0.3 s |
+| Tests | 105 cases in 9 files, about 0.3 s |
 
 ## What it does
 
@@ -94,10 +94,14 @@ A bar fixed to the top of the window, carrying one line of faint text that scrol
 
 - **The scroll**: the line's content is the text **twice over**, animated `translateX(0 → -50%)` on a
   linear infinite loop, so the seam is invisible.
-- **The place**: full width, and `body` is pushed down by the bar's own height (52px by default), so
-  it owns its **own row** and never covers the sidebar or the title row.
-- **Adjustable**: ink strength 0–1 (0.05 by default, the site's own value), editable text
-  (`DEEPSEEK HARNESS` by default), and it can be **switched off entirely** — the row goes with it.
+- **The place**: full width, and `body` is pushed down by the bar's own height (26px by default), so
+  it owns its **own row** and never covers the sidebar or the title row; a 0.5px hairline closes the
+  bar at its foot (the same rule the sidebar's own edge is drawn with), and switching the mark off
+  takes the bar and the line with it.
+- **Adjustable**: height 26px by default (8–200), ink strength 0–1 (0.05 by default, the site's own
+  value), editable text (`DEEPSEEK HARNESS` by default), and it can be **switched off entirely** —
+  the row goes with it. The face is **derived from the height** (0.58 of it, exactly the ratio the
+  original 52px bar had with 30px type), so whatever height the card sets still fits.
 - **Out of the way**: no pointer events, not selectable, `aria-hidden`, and it re-attaches itself if
   something moves or removes it. In the macOS desktop shell it declares `-webkit-app-region: drag`,
   or the product's "no-drag on body children outside `#root`" rule would make that strip undraggable.
@@ -182,7 +186,7 @@ behind**.
 
 ## Configuration
 
-Five appearance fields plus one master switch. Every field is optional: omit it and the default
+Six appearance fields plus one master switch. Every field is optional: omit it and the default
 applies, and an invalid value falls back per field — a broken skin must never keep the GUI from
 booting.
 
@@ -193,6 +197,7 @@ booting.
 | `pattern` | boolean | `true` | Whether to paint the scrolling mark across the top |
 | `patternOpacity` | number 0–1 | `0.05` | The mark's ink strength; the site's own value is 0.05 |
 | `patternText` | string | `DEEPSEEK HARNESS` | What the mark scrolls; must not be blank |
+| `patternHeight` | number 8–200 | `26` | Height of the mark's bar in px; the face is 0.58 of it |
 | `enabled` | boolean | `true` | Whether the skin renders |
 
 In the profile's patch (`profiles/web/cordis.patch.yml`):
@@ -207,6 +212,7 @@ In the profile's patch (`profiles/web/cordis.patch.yml`):
         pattern: true               # paint the scrolling mark across the top
         patternOpacity: 0.05        # its ink strength, 0…1
         patternText: DEEPSEEK HARNESS
+        patternHeight: 26           # the bar's height in px, 8–200
         enabled: true
 ```
 
@@ -214,9 +220,9 @@ You can also skip the YAML and use the plugin's own card instead:
 
 - **Only Save applies a change** (fields do not repaint as you type), and **Restore defaults** writes
   every appearance field back.
-- **Save validates first**: the colour must be a legal literal, the strength must sit inside 0–1, and
-  the mark's text must not be blank. While something is wrong, Save is greyed out and the field says
-  what is wrong underneath.
+- **Save validates first**: the colour must be a legal literal, the strength must sit inside 0–1, the
+  height inside 8–200, and the mark's text must not be blank. While something is wrong, Save is
+  greyed out and the field says what is wrong underneath.
 - **Changes persist**: values are written into the profile's configuration, so they survive a port
   change, a restart and a switch between the panel and the desktop window; the page keeps no copy.
 - **The three faces are not in the card**: the skin ships no font files, so a hand-typed stack would
@@ -237,7 +243,7 @@ dsh-mimo-skin/
 ├── src/types/                # types: config / palette / settings / panel / host / color
 ├── src/utils/                # pure functions: color / value / volatile / config / section
 ├── locale/{zh,en}.json       # card copy; English is the fallback language
-├── test/                     # 101 unit tests
+├── test/                     # 105 unit tests
 ├── docs/                     # the screenshots this README uses
 ├── scripts/install-profile.mjs   # install into / remove from a profile
 ├── build.mjs                 # the esbuild build for both halves
@@ -271,7 +277,7 @@ browser half, so the Host half registers no routes and needs no web server.
 npm install                  # esbuild + schemastery, for the build only
 node build.mjs               # both halves into lib/
 node build.mjs --watch       # rebuild on every src/ change
-node --test test/*.test.mjs  # 101 unit tests
+node --test test/*.test.mjs  # 105 unit tests
 ```
 
 **`lib/` is committed: after changing `src/`, commit the rebuilt `lib/` with it** — a GitHub install

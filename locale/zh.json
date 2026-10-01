@@ -29,9 +29,12 @@
     "fieldPatternOpacityHint": "0–1，默认 0.05，也就是参照站自己的那层淡墨。",
     "fieldPatternText": "字标文字",
     "fieldPatternTextHint": "字标滚动的内容，默认 DEEPSEEK HARNESS。",
+    "fieldPatternHeight": "字标高度",
+    "fieldPatternHeightHint": "顶部那条带子的高度，单位 px，默认 26；字标字号跟着它等比缩放，带子下沿有一条细横线。",
     "errorTheme": "配色外壳只能取「跟随产品 / 浅色 / 深色」三个值之一。",
     "errorAccent": "强调色要写成 #rgb 或 #rrggbb。",
     "errorPatternOpacity": "字标浓度要落在 0 到 1 之间。",
-    "errorPatternText": "字标文字不能为空。"
+    "errorPatternText": "字标文字不能为空。",
+    "errorPatternHeight": "字标高度要落在 8 到 200 px 之间。"
   }
 }

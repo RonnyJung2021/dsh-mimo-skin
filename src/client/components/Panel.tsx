@@ -20,7 +20,7 @@
 
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
-import type { ErrorField } from '../../constants/config.ts'
+import { PATTERN_HEIGHT_MAX, PATTERN_HEIGHT_MIN, type ErrorField } from '../../constants/config.ts'
 import type { MimoPanelProps, PanelCopy } from '../../types/panel.ts'
 import type { ConfigFormLike, ConfigFormView, MimoSection } from '../../types/settings.ts'
 import { invalidFields, sectionOps, SECTION_DEFAULTS } from '../../utils/section.ts'
@@ -127,6 +127,18 @@ export function MimoSkinPanel(props: MimoPanelProps): ReactNode {
             value={draft.patternText}
             disabled={!writable}
             onChange={event => { edit('patternText', event.target.value) }}
+          />
+        </Field>
+
+        <Field label={copy.field.patternHeight.label} hint={copy.field.patternHeight.hint} error={errorOf('patternHeight')}>
+          <input
+            type="number"
+            min={PATTERN_HEIGHT_MIN}
+            max={PATTERN_HEIGHT_MAX}
+            step={1}
+            value={draft.patternHeight}
+            disabled={!writable}
+            onChange={event => { edit('patternHeight', Number(event.target.value)) }}
           />
         </Field>
 

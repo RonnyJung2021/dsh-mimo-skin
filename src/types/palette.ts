@@ -56,6 +56,8 @@ export interface MimoSkinInput {
   readonly pattern: boolean
   /** Ink strength of the band, 0…1. */
   readonly patternOpacity: number
+  /** Height of the band, in pixels; the mark's face is derived from it. */
+  readonly patternHeight: number
 }
 
 /** The palette rendered as the custom properties the stylesheet consumes. */

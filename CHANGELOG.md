@@ -4,6 +4,22 @@ All notable changes to this plugin are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the version
 follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **`patternHeight`.** The mark's bar is now a setting (8–200px in the card and
+  in the profile patch) instead of a compiled constant, and a 0.5px hairline
+  closes the bar at its foot — the same rule the sidebar's edge is drawn with.
+  The mark's face is derived from the height (0.58 of it), so no height crops
+  the glyphs.
+
+### Changed
+
+- **The bar is half as tall by default** — 26px instead of 52px. A bar set back
+  to 52 looks exactly as it did: 0.58 × 52 is the 30px face the old stylesheet
+  clamped to at desktop widths.
+
 ## [0.1.1] - 2026-10-01
 
 ### Fixed

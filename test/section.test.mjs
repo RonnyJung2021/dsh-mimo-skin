@@ -15,19 +15,27 @@ const {
   sectionOps,
 } = await loadModule('utils/section.ts')
 const { hostPublished } = await loadModule('client/published.ts')
-const { SECTION_FIELDS } = await loadModule('constants/config.ts')
-const { SETTINGS_NAMESPACE, DEFAULT_ACCENT, DEFAULT_PATTERN_TEXT } = await loadModule('constants/plugin.ts')
+const { SECTION_FIELDS, PATTERN_HEIGHT_MAX, PATTERN_HEIGHT_MIN } = await loadModule('constants/config.ts')
+const {
+  SETTINGS_NAMESPACE,
+  DEFAULT_ACCENT,
+  DEFAULT_PATTERN_HEIGHT,
+  DEFAULT_PATTERN_TEXT,
+} = await loadModule('constants/plugin.ts')
 const { resolveSettings } = await loadModule('utils/config.ts')
 
 test('the namespace is the loader row id, which is the package name', () => {
   assert.equal(SETTINGS_NAMESPACE, 'dsh-mimo-skin')
 })
 
-test('the row section is the five page knobs, in the order the card lists them', () => {
+test('the row section is the page knobs, in the order the card lists them', () => {
   // One list, read by the Host when it publishes and by the card when it edits.
   // The two used to be separate lists with separate names, which is exactly how
   // a published field and an editable one drift apart.
-  assert.deepEqual([...SECTION_FIELDS], ['theme', 'accent', 'pattern', 'patternOpacity', 'patternText'])
+  assert.deepEqual(
+    [...SECTION_FIELDS],
+    ['theme', 'accent', 'pattern', 'patternOpacity', 'patternText', 'patternHeight'],
+  )
 })
 
 test('the reset table is the plugin one default table', () => {
@@ -38,12 +46,14 @@ test('the reset table is the plugin one default table', () => {
     pattern: defaults.pattern,
     patternOpacity: defaults.patternOpacity,
     patternText: defaults.patternText,
+    patternHeight: defaults.patternHeight,
   })
   assert.equal(SECTION_DEFAULTS.theme, 'auto')
   assert.equal(SECTION_DEFAULTS.accent, DEFAULT_ACCENT)
   assert.equal(SECTION_DEFAULTS.pattern, true)
   assert.equal(SECTION_DEFAULTS.patternOpacity, 0.05)
   assert.equal(SECTION_DEFAULTS.patternText, DEFAULT_PATTERN_TEXT)
+  assert.equal(SECTION_DEFAULTS.patternHeight, DEFAULT_PATTERN_HEIGHT)
 })
 
 test('sectionOf keeps every usable field', () => {
@@ -53,12 +63,14 @@ test('sectionOf keeps every usable field', () => {
     pattern: false,
     patternOpacity: 0.12,
     patternText: '  HARNESS  ',
+    patternHeight: 40,
   }), {
     theme: 'dark',
     accent: '#0095ff',
     pattern: false,
     patternOpacity: 0.12,
     patternText: 'HARNESS',
+    patternHeight: 40,
   })
 })
 
@@ -68,11 +80,14 @@ test('sectionOf drops a field it cannot apply, leaving the boot value', () => {
   assert.deepEqual(sectionOf({ patternOpacity: Number.NaN }), {})
   assert.deepEqual(sectionOf({ accent: 'orange' }), {})
   assert.deepEqual(sectionOf({ patternText: '   ' }), {})
+  assert.deepEqual(sectionOf({ patternHeight: '26' }), {})
 })
 
-test('sectionOf clamps the opacity instead of refusing the write', () => {
+test('sectionOf clamps the numeric knobs instead of refusing the write', () => {
   assert.equal(sectionOf({ patternOpacity: 4 }).patternOpacity, 1)
   assert.equal(sectionOf({ patternOpacity: -2 }).patternOpacity, 0)
+  assert.equal(sectionOf({ patternHeight: 9999 }).patternHeight, PATTERN_HEIGHT_MAX)
+  assert.equal(sectionOf({ patternHeight: 0 }).patternHeight, PATTERN_HEIGHT_MIN)
 })
 
 test('sectionOf takes nothing from a section that is not an object', () => {
@@ -103,6 +118,8 @@ test('invalidFields names every knob the settings service would reject', () => {
   assert.deepEqual(invalidFields({ ...SECTION_DEFAULTS, patternOpacity: 2 }), ['patternOpacity'])
   assert.deepEqual(invalidFields({ ...SECTION_DEFAULTS, patternOpacity: Number.NaN }), ['patternOpacity'])
   assert.deepEqual(invalidFields({ ...SECTION_DEFAULTS, patternText: '   ' }), ['patternText'])
+  assert.deepEqual(invalidFields({ ...SECTION_DEFAULTS, patternHeight: PATTERN_HEIGHT_MAX + 1 }), ['patternHeight'])
+  assert.deepEqual(invalidFields({ ...SECTION_DEFAULTS, patternHeight: PATTERN_HEIGHT_MIN - 1 }), ['patternHeight'])
 })
 
 test('invalidFields reports the offenders in the order the card lists them', () => {
@@ -112,18 +129,22 @@ test('invalidFields reports the offenders in the order the card lists them', () 
     pattern: true,
     patternOpacity: 9,
     patternText: '',
-  }), ['theme', 'accent', 'patternOpacity', 'patternText'])
+    patternHeight: 0,
+  }), ['theme', 'accent', 'patternOpacity', 'patternText', 'patternHeight'])
 })
 
 test('sectionOps writes one set per knob, so the write is fenced as one revision', () => {
   const ops = sectionOps(SECTION_DEFAULTS)
-  assert.deepEqual(ops.map(op => op.op), ['set', 'set', 'set', 'set', 'set'])
-  assert.deepEqual(ops.map(op => op.path), [['theme'], ['accent'], ['pattern'], ['patternOpacity'], ['patternText']])
+  assert.deepEqual(ops.map(op => op.op), ['set', 'set', 'set', 'set', 'set', 'set'])
+  assert.deepEqual(ops.map(op => op.path), [
+    ['theme'], ['accent'], ['pattern'], ['patternOpacity'], ['patternText'], ['patternHeight'],
+  ])
   assert.deepEqual(ops.map(op => op.value), [
     SECTION_DEFAULTS.theme,
     SECTION_DEFAULTS.accent,
     SECTION_DEFAULTS.pattern,
     SECTION_DEFAULTS.patternOpacity,
     SECTION_DEFAULTS.patternText,
+    SECTION_DEFAULTS.patternHeight,
   ])
 })

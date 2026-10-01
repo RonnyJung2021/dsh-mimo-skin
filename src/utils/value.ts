@@ -18,6 +18,22 @@ export function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 /**
+ * Whether a value is a finite number inside a range.
+ *
+ * The reporting counterpart of {@link numberWithin}: a form has to refuse an
+ * out-of-range draft rather than clamp it away silently, and this is the test it
+ * refuses on.
+ * @param value - candidate.
+ * @param min - inclusive lower bound.
+ * @param max - inclusive upper bound.
+ * @returns true when the candidate is a usable number for that range.
+ */
+export function isNumberWithin(value: unknown, min: number, max: number): boolean {
+  if (typeof value !== 'number' || !Number.isFinite(value)) return false
+  return value >= min && value <= max
+}
+
+/**
  * Narrow one value to a finite number inside a range.
  * @param value - candidate.
  * @param min - inclusive lower bound.

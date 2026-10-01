@@ -29,9 +29,12 @@
     "fieldPatternOpacityHint": "0–1, 0.05 by default — the reference site's own wash.",
     "fieldPatternText": "Mark text",
     "fieldPatternTextHint": "What the mark scrolls. DEEPSEEK HARNESS by default.",
+    "fieldPatternHeight": "Mark height",
+    "fieldPatternHeightHint": "The strip's height in px, 26 by default; the mark's face scales with it, and a hairline closes the strip at its foot.",
     "errorTheme": "The shell is one of follow-the-product, light, or dark.",
     "errorAccent": "The accent is written as #rgb or #rrggbb.",
     "errorPatternOpacity": "The mark ink is between 0 and 1.",
-    "errorPatternText": "The mark text cannot be empty."
+    "errorPatternText": "The mark text cannot be empty.",
+    "errorPatternHeight": "The mark height is between 8 and 200 px."
   }
 }

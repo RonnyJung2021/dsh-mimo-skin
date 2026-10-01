@@ -27,11 +27,11 @@
  * - **The accent's wash.** The accent at the shell's own low alpha, so a
  *   custom accent carries through selected rows and inline code.
  *
- * The faces, the band's height and the variable names are compiled in rather
- * than configured; they live in `constants/palette.ts`.
+ * The faces and the variable names are compiled in rather than configured; they
+ * live in `constants/palette.ts`. The strip's height is a setting, so it comes
+ * from the input and is written out here.
  */
 
-import { MARQUEE_HEIGHT } from '../constants/palette.ts'
 import type { MimoShell, MimoSkinInput, MimoVariables } from '../types/palette.ts'
 import { parseColor, readableOn, toHex } from '../utils/color.ts'
 
@@ -132,7 +132,7 @@ export function skinVariables(input: MimoSkinInput, shell: MimoShell): MimoVaria
     '--dsh-mimo-active': shell.active,
     '--dsh-mimo-shadow': shell.shadow,
     // Zero when the band is off, so the page it would have pushed down closes up.
-    '--dsh-mimo-marquee-height': input.pattern ? `${MARQUEE_HEIGHT}px` : '0px',
+    '--dsh-mimo-marquee-height': input.pattern ? `${input.patternHeight}px` : '0px',
     '--dsh-mimo-pattern-opacity': String(input.pattern ? input.patternOpacity : 0),
   }
 }

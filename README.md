@@ -5,7 +5,7 @@
 ![version](https://img.shields.io/badge/version-0.1.1-blue)
 ![license](https://img.shields.io/badge/license-MIT-green)
 ![DSH](https://img.shields.io/badge/DSH-%3E%3D0.1.5--rc.2-8b5cf6)
-![tests](https://img.shields.io/badge/tests-101%20passing-brightgreen)
+![tests](https://img.shields.io/badge/tests-105%20passing-brightgreen)
 ![node](https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24-339933)
 
 > 给 DSH Web GUI 换一套外观的**纯皮肤插件** —— 暖白纸面、黑色发丝分隔线、衬线阅读正文、橙色点缀。
@@ -28,11 +28,11 @@
 
 | 项 | 值 |
 | --- | --- |
-| 产物体积 | `lib/index.js` 42.1 KB / `lib/client.js` 47.5 KB |
+| 产物体积 | `lib/index.js` 43.3 KB / `lib/client.js` 50.5 KB |
 | 改写的产品 token | 74 个 `--dsw-*` alias |
 | 皮肤自己的变量 | 16 个 `--dsh-mimo-*` |
 | 打包资源 / 运行时依赖 | **0**（不带字体文件、不带图片；只有引擎自己的 `@deepseek-ai/cordis` 保持外部） |
-| 单测 | 101 项，9 个文件，约 0.3 s 跑完 |
+| 单测 | 105 项，9 个文件，约 0.3 s 跑完 |
 
 ## 主要功能
 
@@ -88,9 +88,11 @@
 一条固定在整个窗口顶端的横条，里面是一行横向滚动的淡字：
 
 - **滚动**：内容是该文字的**两遍**，动画 `translateX(0 → -50%)` 线性无限循环，接缝处看不见跳。
-- **位置**：横向铺满，`body` 被它自身高度（默认 52px）顶下去，所以它有自己的**一行**，不压侧栏与标题行。
-- **可调**：浓度 0–1（默认 `0.05`，参考站自己的值）、文字可改（默认 `DEEPSEEK HARNESS`）、
-  可以整个关掉 —— 关掉时那一行也收回去，不留空白。
+- **位置**：横向铺满，`body` 被它自身高度（默认 26px）顶下去，所以它有自己的**一行**，不压侧栏与标题行；
+  这条带子的下沿有一条 0.5px 细横线（和侧栏那条竖线同一个规则色），关掉字标时带子收起，线也跟着走。
+- **可调**：高度默认 26px（8–200）、浓度 0–1（默认 `0.05`，参考站自己的值）、文字可改（默认 `DEEPSEEK HARNESS`）、
+  可以整个关掉 —— 关掉时那一行也收回去，不留空白。字标字号是**按高度算的**（高度的 0.58，正好是
+  原来 52px 带子配 30px 字的那套比例），所以把高度调到多少，字都装得进那条带子。
 - **不添乱**：不挡鼠标、不可选中、`aria-hidden`，被挪走或移除会自动挂回；在 macOS 桌面壳里
   自己声明 `-webkit-app-region: drag`，否则窗口顶端会被产品的 no-drag 规则挖掉一块，拖不动。
 
@@ -167,7 +169,7 @@ dsh plugin --profile web remove dsh-mimo-skin
 
 ## 配置
 
-五个外观项加一个总开关，全部可选，省略即用默认值，非法值逐字段回退 —— 皮肤坏掉不该拖住 GUI 启动。
+六个外观项加一个总开关，全部可选，省略即用默认值，非法值逐字段回退 —— 皮肤坏掉不该拖住 GUI 启动。
 
 | 项 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
@@ -176,6 +178,7 @@ dsh plugin --profile web remove dsh-mimo-skin
 | `pattern` | boolean | `true` | 是否画顶部那条横向滚动的字标 |
 | `patternOpacity` | number 0–1 | `0.05` | 字标墨色浓度；参考站自己的值就是 0.05 |
 | `patternText` | string | `DEEPSEEK HARNESS` | 字标滚动的内容，不能为空 |
+| `patternHeight` | number 8–200 | `26` | 字标那条带子的高度（px）；字号按它的 0.58 算 |
 | `enabled` | boolean | `true` | 皮肤是否渲染 |
 
 写在 profile 的 patch 里（`profiles/web/cordis.patch.yml`）：
@@ -190,14 +193,15 @@ dsh plugin --profile web remove dsh-mimo-skin
         pattern: true               # 是否画顶部那条滚动字标
         patternOpacity: 0.05        # 字标墨色浓度 0…1
         patternText: DEEPSEEK HARNESS
+        patternHeight: 26           # 字标带子高度 px，8–200
         enabled: true
 ```
 
 也可以不改 YAML，直接在上面那张卡片里改：
 
 - **改完点「保存」才生效**（不是改一项立刻重画），另有一颗**「恢复默认」**把所有外观项写回默认。
-- **保存前先校验**：颜色值要合法、浓度要落在 0–1、字标文字不能为空。不合法时「保存」是灰的，
-  字段下面直接说明哪里不行。
+- **保存前先校验**：颜色值要合法、浓度要落在 0–1、高度要落在 8–200、字标文字不能为空。不合法时
+  「保存」是灰的，字段下面直接说明哪里不行。
 - **改动能留住**：值写进 profile 的配置，换端口、重启、在面板与桌面窗口之间切换都还在，页面不留副本。
 - 三套字体**不在卡片里**：皮肤不带字体文件，手填字体栈只会指向这台机器可能没装的字族，
   所以字体栈固定用插件内置的那几套。
@@ -217,7 +221,7 @@ dsh-mimo-skin/
 ├── src/types/                # 类型：config / palette / settings / panel / host / color
 ├── src/utils/                # 纯函数：color / value / volatile / config / section
 ├── locale/{zh,en}.json       # 卡片文案，英文是回退语言
-├── test/                     # 101 项单测
+├── test/                     # 105 项单测
 ├── docs/                     # README 用的截图
 ├── scripts/install-profile.mjs   # 装进 / 移出某个 profile
 ├── build.mjs                 # esbuild 构建两个半边
@@ -248,7 +252,7 @@ dsh-mimo-skin/
 npm install                  # esbuild + schemastery，只为构建
 node build.mjs               # 两个半边都产出到 lib/
 node build.mjs --watch       # 改 src/ 就重建
-node --test test/*.test.mjs  # 101 项单测
+node --test test/*.test.mjs  # 105 项单测
 ```
 
 **`lib/` 入库，改完 `src/` 请把重建后的 `lib/` 一起提交** —— GitHub 直装用的就是仓库里这份产物。

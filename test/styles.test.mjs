@@ -12,6 +12,7 @@ import { createFakeDocument } from './fake-dom.mjs'
 
 const { PAGE_CSS, installPageStyles } = await loadModule('client/styles/page.ts')
 const { SKIN_ATTRIBUTE, MARQUEE_CLASS, MARQUEE_TRACK_CLASS, STYLE_ID } = await loadModule('constants/dom.ts')
+const { MARK_FACE_RATIO } = await loadModule('constants/palette.ts')
 
 test('the stylesheet hangs every override off the skin attribute', () => {
   // The one global it may touch is the shell root it has to lift over the band.
@@ -38,13 +39,33 @@ test('the band is a fixed strip across the top and the page is pushed below it',
   assert.match(band, /top: 0;/u)
   assert.match(band, /left: 0;/u)
   assert.match(band, /right: 0;/u)
-  assert.match(band, /height: var\(--dsh-mimo-marquee-height/u)
+  assert.match(band, /height: var\(--dsh-mimo-marquee-height, \d+px\)/u)
   assert.match(band, /overflow: hidden;/u)
   // A mark behind the page must not intercept clicks or be selectable.
   assert.match(band, /pointer-events: none;/u)
   assert.match(band, /user-select: none;/u)
   // The row it owns is reserved out of the page, by exactly the same value.
   assert.match(PAGE_CSS, /body\[data-dsh-mimo\] \{\s*box-sizing: border-box;\s*padding-top: var\(--dsh-mimo-marquee-height/u)
+})
+
+test('the strip is closed by a hairline at its foot, inside its own height', () => {
+  const band = PAGE_CSS.match(new RegExp(`\\.${MARQUEE_CLASS} \\{[^}]*\\}`))?.[0] ?? ''
+  // The same rule the sidebar's own edge is drawn with, and hidden inside the
+  // strip's height so the line cannot push the page down by an extra half pixel.
+  assert.match(band, /box-sizing: border-box;/u)
+  assert.match(band, /border-bottom: 0\.5px solid var\(--dsh-mimo-rule\);/u)
+})
+
+test('the mark face follows the strip height, so no height crops the glyphs', () => {
+  const track = PAGE_CSS.match(new RegExp(`\\.${MARQUEE_CLASS} > \\.${MARQUEE_TRACK_CLASS} \\{[^}]*\\}`))?.[0] ?? ''
+  assert.match(
+    track,
+    new RegExp(`font-size: calc\\(var\\(--dsh-mimo-marquee-height, \\d+px\\) \\* ${MARK_FACE_RATIO}\\);`),
+  )
+  // A fixed size would be a second knob the card cannot reach.
+  assert.doesNotMatch(track, /font-size: \d+px/u)
+  // At the height the skin first shipped, the ratio gives back its old face.
+  assert.equal(Math.round(52 * MARK_FACE_RATIO), 30)
 })
 
 test('the line scrolls by exactly one copy and loops', () => {

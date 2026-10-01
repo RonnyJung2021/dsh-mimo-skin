@@ -15,8 +15,10 @@
  *    into the base block, because a single set of values cannot be both the
  *    black-paper inversion and the warm page.
  * 3. **The band.** A fixed strip across the top of the window holding one
- *    scrolling line, with `body` padded down by the strip's own height so the
- *    mark has a row of its own instead of crossing the application's chrome.
+ *    scrolling line, closed by a hairline at its foot, with `body` padded down
+ *    by the strip's own height so the mark has a row of its own instead of
+ *    crossing the application's chrome. Both the strip's height and its face
+ *    come from the one setting, so the mark always fits the row it owns.
  *
  * Deliberately **not** remapped, because DSH already switches them for us on
  * `body[data-ds-dark-theme]` and pinning them would flatten both shells onto
@@ -49,7 +51,8 @@
  */
 
 import { MARQUEE_CLASS, MARQUEE_TRACK_CLASS, SKIN_ATTRIBUTE, STYLE_ID } from '../../constants/dom.ts'
-import { MARQUEE_HEIGHT, MONO_STACK, SANS_STACK, SERIF_STACK } from '../../constants/palette.ts'
+import { MARK_FACE_RATIO, MONO_STACK, SANS_STACK, SERIF_STACK } from '../../constants/palette.ts'
+import { DEFAULT_PATTERN_HEIGHT } from '../../constants/plugin.ts'
 
 /** Install the stylesheet once per page. */
 export function installPageStyles(doc: Document = document): void {
@@ -74,7 +77,11 @@ export const PAGE_CSS = `
   top: 0;
   left: 0;
   right: 0;
-  height: var(--dsh-mimo-marquee-height, ${MARQUEE_HEIGHT}px);
+  /* \`border-box\` so the hairline at the foot is inside the strip the page is
+     pushed down by, and the two edges stay one value apart. */
+  box-sizing: border-box;
+  height: var(--dsh-mimo-marquee-height, ${DEFAULT_PATTERN_HEIGHT}px);
+  border-bottom: 0.5px solid var(--dsh-mimo-rule);
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
@@ -97,7 +104,9 @@ body[${SKIN_ATTRIBUTE}] .${MARQUEE_CLASS} {
 .${MARQUEE_CLASS} > .${MARQUEE_TRACK_CLASS} {
   flex: none;
   font-family: ${SANS_STACK};
-  font-size: clamp(20px, 2.2vw, 30px);
+  /* The strip's height is a setting, so the face follows it: a fixed size would
+     crop the glyphs the moment the card moved the strip off its default. */
+  font-size: calc(var(--dsh-mimo-marquee-height, ${DEFAULT_PATTERN_HEIGHT}px) * ${MARK_FACE_RATIO});
   font-weight: 700;
   letter-spacing: 0.3em;
   line-height: 1;

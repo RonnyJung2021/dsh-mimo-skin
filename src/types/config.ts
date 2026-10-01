@@ -20,6 +20,8 @@ export interface MimoSettings {
   readonly patternOpacity: number
   /** What the mark scrolls. */
   readonly patternText: string
+  /** Height of the strip the mark scrolls in, in pixels. */
+  readonly patternHeight: number
   /** Whether the skin renders at all. */
   readonly enabled: boolean
 }
@@ -31,5 +33,6 @@ export interface MimoConfig {
   readonly pattern?: unknown
   readonly patternOpacity?: unknown
   readonly patternText?: unknown
+  readonly patternHeight?: unknown
   readonly enabled?: unknown
 }

@@ -33,6 +33,16 @@ export const DEFAULT_PATTERN_TEXT = 'DEEPSEEK HARNESS'
 /** Ink strength of that mark, 0…1. MiMo's own watermark sits at 0.05. */
 export const DEFAULT_PATTERN_OPACITY = 0.05
 
+/**
+ * Height of the strip the mark scrolls in, in pixels.
+ *
+ * Half of the 52 the skin first shipped: the strip is a hairline-ruled header,
+ * not a banner. The mark's face is derived from this value, so the two cannot
+ * drift apart, and the card can move it anywhere inside
+ * {@link PATTERN_HEIGHT_MIN}…{@link PATTERN_HEIGHT_MAX}.
+ */
+export const DEFAULT_PATTERN_HEIGHT = 26
+
 /** Shell painted when the row configures none. */
 export const DEFAULT_THEME: MimoTheme = 'auto'
 

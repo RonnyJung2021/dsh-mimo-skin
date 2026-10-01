@@ -12,12 +12,14 @@ const { createSkin } = await loadModule('client/skin.ts')
 const { SKIN_ATTRIBUTE, DARK_ATTRIBUTE, THEME_DARK_ATTRIBUTE } = await loadModule('constants/dom.ts')
 const { LIGHT_SHELL, DARK_SHELL } = await loadModule('client/palette.ts')
 const { PALETTE_VARIABLES } = await loadModule('constants/palette.ts')
+const { DEFAULT_PATTERN_HEIGHT } = await loadModule('constants/plugin.ts')
 
 const INPUT = {
   theme: 'auto',
   accent: '#ff6700',
   pattern: true,
   patternOpacity: 0.05,
+  patternHeight: DEFAULT_PATTERN_HEIGHT,
 }
 
 test('applying paints the light shell and marks the body', () => {

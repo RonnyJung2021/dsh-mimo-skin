@@ -9,9 +9,11 @@
  */
 
 import z from '@deepseek-ai/schemastery'
+import { PATTERN_HEIGHT_MAX, PATTERN_HEIGHT_MIN } from '../constants/config.ts'
 import {
   DEFAULT_ACCENT,
   DEFAULT_GLOBAL_NAME,
+  DEFAULT_PATTERN_HEIGHT,
   DEFAULT_PATTERN_OPACITY,
   DEFAULT_PATTERN_TEXT,
   DEFAULT_THEME,
@@ -31,6 +33,8 @@ export interface Config extends MimoConfig {
   readonly patternOpacity: number
   /** What the mark scrolls. */
   readonly patternText: string
+  /** Height of the strip the mark scrolls in, in pixels. */
+  readonly patternHeight: number
   /** Whether the skin publishes at all. */
   readonly enabled: boolean
   /** Global name the browser half reads; defaults to {@link DEFAULT_GLOBAL_NAME}. */
@@ -49,6 +53,8 @@ export const Config = z.object({
     .description('字标的墨色浓度，0–1，默认 0.05——参照站自己的值。').volatile(),
   patternText: z.string().default(DEFAULT_PATTERN_TEXT)
     .description('字标滚动的文字，默认 DEEPSEEK HARNESS。').volatile(),
+  patternHeight: z.number().min(PATTERN_HEIGHT_MIN).max(PATTERN_HEIGHT_MAX).default(DEFAULT_PATTERN_HEIGHT)
+    .description(`顶部那条带子的高度，单位 px（${PATTERN_HEIGHT_MIN}–${PATTERN_HEIGHT_MAX}），默认 ${DEFAULT_PATTERN_HEIGHT}；字标字号跟着它等比缩放。`).volatile(),
   enabled: z.boolean().default(true)
     .description('是否发布这套皮肤配置；关掉等于本行不注入，页面回落到自带默认值。'),
   globalName: z.string().default(DEFAULT_GLOBAL_NAME)

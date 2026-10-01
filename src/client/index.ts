@@ -56,6 +56,7 @@ export function apply(ctx: Context, doc: Document = document): void {
     accent: settings.accent,
     pattern: settings.pattern,
     patternOpacity: settings.patternOpacity,
+    patternHeight: settings.patternHeight,
   }
   const skin = createSkin(input, doc)
   let marquee: Marquee | undefined = settings.pattern

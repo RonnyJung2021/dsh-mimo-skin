@@ -81,7 +81,10 @@ test('every knob has a label, a hint and, where it can be refused, a message', (
     assert.ok(copy.field[field].hint.length > 0, field)
   }
   // `pattern` is a switch: there is no value it could be refused on.
-  assert.deepEqual(Object.keys(copy.error), ['theme', 'accent', 'patternOpacity', 'patternText'])
+  assert.deepEqual(
+    Object.keys(copy.error),
+    ['theme', 'accent', 'patternOpacity', 'patternText', 'patternHeight'],
+  )
 })
 
 test('the shell picker lists the three choices in the documented order', () => {

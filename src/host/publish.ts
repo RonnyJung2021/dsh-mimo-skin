@@ -23,6 +23,7 @@ export function plainConfig(config: Config): MimoConfig {
     pattern: plainValue(config.pattern),
     patternOpacity: plainValue(config.patternOpacity),
     patternText: plainValue(config.patternText),
+    patternHeight: plainValue(config.patternHeight),
     enabled: plainValue(config.enabled),
   }
 }

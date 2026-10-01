@@ -18,13 +18,13 @@ export const SANS_STACK = "'MiSans', 'Ubuntu', -apple-system, BlinkMacSystemFont
 export const MONO_STACK = "'SF Mono', 'Fira Code', 'JetBrains Mono', Consolas, 'Liberation Mono', Menlo, monospace"
 
 /**
- * Height of the scrolling band, in pixels.
+ * The mark's face as a fraction of the strip's height.
  *
- * The line renders at `clamp(20px, 2.2vw, 30px)`, so this leaves the mark a
- * little air above and below at every width. The page is pushed down by exactly
- * this much, which is why it is one value and not two.
+ * The strip is a setting, so the face has to follow it or a shorter strip would
+ * crop the glyphs. 0.58 is the ratio the skin's first fixed strip had (30px of
+ * type in 52px), so a strip set back to 52 looks exactly as it did.
  */
-export const MARQUEE_HEIGHT = 52
+export const MARK_FACE_RATIO = 0.58
 
 /** Custom-property names the skin writes, in the order the stylesheet reads them. */
 export const PALETTE_VARIABLES = [

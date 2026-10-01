@@ -21,6 +21,8 @@ export interface MimoSection {
   patternOpacity: number
   /** What the mark scrolls. */
   patternText: string
+  /** Height of the strip the mark scrolls in, in pixels. */
+  patternHeight: number
 }
 
 /** The current form state for one namespace, as the client half reads it. */

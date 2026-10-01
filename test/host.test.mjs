@@ -16,7 +16,12 @@ import assert from 'node:assert/strict'
 import { loadModule } from './load-module.mjs'
 
 const { apply, Config } = await loadModule('index.ts')
-const { DEFAULT_ACCENT, DEFAULT_GLOBAL_NAME, DEFAULT_PATTERN_TEXT } = await loadModule('constants/plugin.ts')
+const {
+  DEFAULT_ACCENT,
+  DEFAULT_GLOBAL_NAME,
+  DEFAULT_PATTERN_HEIGHT,
+  DEFAULT_PATTERN_TEXT,
+} = await loadModule('constants/plugin.ts')
 
 /** Every knob at its schema default, as an empty patch resolves. */
 const DEFAULT_PUBLISHED = {
@@ -25,6 +30,7 @@ const DEFAULT_PUBLISHED = {
   pattern: true,
   patternOpacity: 0.05,
   patternText: DEFAULT_PATTERN_TEXT,
+  patternHeight: DEFAULT_PATTERN_HEIGHT,
 }
 
 /**
@@ -88,6 +94,7 @@ test('pinned values are published as configured', () => {
     pattern: false,
     patternOpacity: 0.2,
     patternText: 'HARNESS',
+    patternHeight: 40,
   }))
   record.listeners[0].listener(record.table)
   assert.deepEqual(record.table[0].value, {
@@ -97,6 +104,7 @@ test('pinned values are published as configured', () => {
     pattern: false,
     patternOpacity: 0.2,
     patternText: 'HARNESS',
+    patternHeight: 40,
     enabled: true,
   })
 })
@@ -105,6 +113,17 @@ test('the schema rejects values the browser half could not paint', () => {
   assert.throws(() => Config({ theme: 'sepia' }), /theme/u)
   assert.throws(() => Config({ patternOpacity: 2 }), /patternOpacity/u)
   assert.throws(() => Config({ pattern: 'yes' }), /pattern/u)
+  assert.throws(() => Config({ patternHeight: 4000 }), /patternHeight/u)
+})
+
+test('a strip height outside the accepted range falls back to the default', () => {
+  const { ctx, record } = fakeContext()
+  // The schema refuses the value before `apply` ever sees it, so a row cannot
+  // pin a strip the browser half would have to clamp.
+  assert.throws(() => Config({ patternHeight: 4000 }), /patternHeight/u)
+  apply(ctx, Config({}))
+  record.listeners[0].listener(record.table)
+  assert.equal(record.table[0].value.patternHeight, DEFAULT_PATTERN_HEIGHT)
 })
 
 test('an unusable accent falls back to the reference colour', () => {

@@ -17,18 +17,20 @@ const {
   skinVariables,
 } = await loadModule('client/palette.ts')
 const {
-  MARQUEE_HEIGHT,
+  MARK_FACE_RATIO,
   MONO_STACK,
   PALETTE_VARIABLES,
   SANS_STACK,
   SERIF_STACK,
 } = await loadModule('constants/palette.ts')
+const { DEFAULT_PATTERN_HEIGHT } = await loadModule('constants/plugin.ts')
 
 const INPUT = {
   theme: 'auto',
   accent: '#ff6700',
   pattern: true,
   patternOpacity: 0.05,
+  patternHeight: DEFAULT_PATTERN_HEIGHT,
 }
 
 test('the light shell carries the reference site tokens verbatim', () => {
@@ -126,8 +128,16 @@ test('every declared variable is written, in order, and never empty', () => {
   assert.equal(variables['--dsh-mimo-accent'], '#ff6700')
 })
 
-test('the band height is the strip when on and zero when off', () => {
-  assert.equal(skinVariables(INPUT, LIGHT_SHELL)['--dsh-mimo-marquee-height'], `${MARQUEE_HEIGHT}px`)
+test('the band height is the configured strip when on, and zero when off', () => {
+  assert.equal(
+    skinVariables(INPUT, LIGHT_SHELL)['--dsh-mimo-marquee-height'],
+    `${DEFAULT_PATTERN_HEIGHT}px`,
+  )
+  // The card's value is what travels: the strip is a setting, not a constant.
+  assert.equal(
+    skinVariables({ ...INPUT, patternHeight: 40 }, LIGHT_SHELL)['--dsh-mimo-marquee-height'],
+    '40px',
+  )
   assert.equal(
     skinVariables({ ...INPUT, pattern: false }, LIGHT_SHELL)['--dsh-mimo-marquee-height'],
     '0px',

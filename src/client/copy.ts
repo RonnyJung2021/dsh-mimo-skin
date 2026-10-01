@@ -25,7 +25,8 @@ export const COPY_KEYS = [
   'fieldPattern', 'fieldPatternHint',
   'fieldPatternOpacity', 'fieldPatternOpacityHint',
   'fieldPatternText', 'fieldPatternTextHint',
-  'errorTheme', 'errorAccent', 'errorPatternOpacity', 'errorPatternText',
+  'fieldPatternHeight', 'fieldPatternHeightHint',
+  'errorTheme', 'errorAccent', 'errorPatternOpacity', 'errorPatternText', 'errorPatternHeight',
 ] as const
 
 /** The `panel` section of one dictionary, or an empty object. */
@@ -95,12 +96,14 @@ export function panelCopy(language?: string): PanelCopy {
       pattern: { label: read('fieldPattern'), hint: read('fieldPatternHint') },
       patternOpacity: { label: read('fieldPatternOpacity'), hint: read('fieldPatternOpacityHint') },
       patternText: { label: read('fieldPatternText'), hint: read('fieldPatternTextHint') },
+      patternHeight: { label: read('fieldPatternHeight'), hint: read('fieldPatternHeightHint') },
     },
     error: {
       theme: read('errorTheme'),
       accent: read('errorAccent'),
       patternOpacity: read('errorPatternOpacity'),
       patternText: read('errorPatternText'),
+      patternHeight: read('errorPatternHeight'),
     },
   }
 }
