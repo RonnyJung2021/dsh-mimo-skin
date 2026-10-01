@@ -19,38 +19,23 @@
  */
 
 import type { Context } from '@deepseek-ai/cordis'
-import { DEFAULT_GLOBAL_NAME, resolveSettings, type MimoConfig, type MimoSettings } from '../config.ts'
+import { PLUGIN_ID, SETTINGS_NAMESPACE } from '../constants/plugin.ts'
+import type { ConfigFormLike, ConfigFormsLike, MimoSection, SlotRegistryLike } from '../types/settings.ts'
+import { sectionOf } from '../utils/section.ts'
+import { MimoSkinPanel } from './components/Panel.tsx'
 import { createMarquee, type Marquee } from './marquee.ts'
-import { MimoSkinPanel } from './panel.tsx'
-import { installPanelStyles } from './panel-styles.ts'
-import {
-  hostPublished,
-  sectionOf,
-  SETTINGS_NAMESPACE,
-  type ConfigFormLike,
-  type ConfigFormsLike,
-  type MimoSection,
-  type SlotRegistryLike,
-} from './settings.ts'
+import { hostPublished, readSettings } from './published.ts'
 import { createSkin } from './skin.ts'
-import { installStyles } from './styles.ts'
+import { installPageStyles } from './styles/page.ts'
+import { installPanelStyles } from './styles/panel.ts'
+
+export { readSettings } from './published.ts'
 
 /** Stable entry name; matches the package name the Host serves this bundle under. */
-export const name = 'dsh-mimo-skin'
+export const name = PLUGIN_ID
 
 /** This half reads no engine services; the settings arrive through the page. */
 export const inject: string[] = []
-
-/**
- * Read the settings the Host published into this page.
- * @param scope - global scope to read; the page by default.
- * @returns resolved settings; defaults when the Host half is absent.
- */
-export function readSettings(scope: Record<string, unknown> = globalThis as unknown as Record<string, unknown>): MimoSettings {
-  const raw = scope[DEFAULT_GLOBAL_NAME]
-  const config = typeof raw === 'object' && raw !== null ? raw as MimoConfig : undefined
-  return resolveSettings(config)
-}
 
 /**
  * Mount the MiMo skin for this page.
@@ -65,7 +50,7 @@ export function apply(ctx: Context, doc: Document = document): void {
   const settings = readSettings()
   if (!settings.enabled) return
 
-  installStyles(doc)
+  installPageStyles(doc)
   const input = {
     theme: settings.theme,
     accent: settings.accent,

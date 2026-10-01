@@ -10,7 +10,7 @@ import { loadModule } from './load-module.mjs'
 import { createFakeDocument } from './fake-dom.mjs'
 
 const { createMarquee, marqueeContent } = await loadModule('client/marquee.ts')
-const { MARQUEE_CLASS, MARQUEE_TRACK_CLASS } = await loadModule('client/contract.ts')
+const { MARQUEE_CLASS, MARQUEE_TRACK_CLASS } = await loadModule('constants/dom.ts')
 
 /** The band's one child, from a document the module has already painted. */
 function bandOf(doc) {

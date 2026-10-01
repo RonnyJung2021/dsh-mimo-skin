@@ -18,7 +18,7 @@ const {
   luminance,
   contrast: ratio,
   readableOn,
-} = await loadModule('color.ts')
+} = await loadModule('utils/color.ts')
 
 test('parseColor reads the two accepted literal forms', () => {
   assert.deepEqual(parseColor('#ff6700'), { r: 255, g: 103, b: 0 })

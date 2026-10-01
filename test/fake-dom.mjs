@@ -59,7 +59,7 @@ class FakeElement {
 
   /* `id` and `className` are the reflected forms of the attributes of the same
      name: assigning the property writes the attribute, the way a real element
-     behaves. Keeping them as plain own fields would let `installStyles` set
+     behaves. Keeping them as plain own fields would let `installPageStyles` set
      `.id` and leave `getElementById` looking at an empty attribute. */
   get id() {
     return this.getAttribute('id') ?? ''

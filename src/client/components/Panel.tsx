@@ -2,7 +2,8 @@
  * The card's own configuration panel.
  *
  * This is the only React in the plugin: the plugin page hands a slot entry a
- * component, so the panel is one small component and nothing else.
+ * component, so the panel is one small component — plus the leaf controls it
+ * renders — and nothing else.
  *
  * Unlike the first cut of this card, edits do **not** write through on every
  * keystroke. A draft lives here, Save is what commits it, and Save is refused
@@ -19,41 +20,13 @@
 
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
-import { contrast, parseColor, readableOn, type Rgb } from '../color.ts'
-import { panelCopy, type ErrorField, type PanelCopy } from './copy.ts'
-import { DARK_SHELL, LIGHT_SHELL } from './palette.ts'
-import {
-  invalidFields,
-  sectionOps,
-  SECTION_DEFAULTS,
-  type ConfigFormLike,
-  type ConfigFormView,
-  type MimoSection,
-} from './settings.ts'
-
-/** Props the plugin page and the inject face put on the panel. */
-export interface MimoPanelProps {
-  /** Which view the page is drawing; the bundle card always asks for `page`. */
-  readonly view?: 'page' | 'summary'
-  /** The row's settings form. */
-  readonly form: ConfigFormLike<MimoSection>
-  /** Whether the boot global carried the knobs, i.e. the host half is current. */
-  readonly hostPublished: boolean
-}
-
-/** One derived accent-text value and the contrast it reaches. */
-interface AccentText {
-  /** The literal the accent becomes where it is rendered as text. */
-  readonly value: string
-  /** Its contrast ratio against that shell's page. */
-  readonly ratio: string
-}
-
-/** Both shells' derived accent-text values. */
-interface AccentPreview {
-  readonly light: AccentText
-  readonly dark: AccentText
-}
+import type { ErrorField } from '../../constants/config.ts'
+import type { MimoPanelProps, PanelCopy } from '../../types/panel.ts'
+import type { ConfigFormLike, ConfigFormView, MimoSection } from '../../types/settings.ts'
+import { invalidFields, sectionOps, SECTION_DEFAULTS } from '../../utils/section.ts'
+import { accentPreview } from '../accent-preview.ts'
+import { panelCopy } from '../copy.ts'
+import { AccentTextPair, Field, Toggle } from './controls.tsx'
 
 /**
  * Subscribe a component to one form.
@@ -64,69 +37,6 @@ function useFormView(form: ConfigFormLike<MimoSection>): ConfigFormView<MimoSect
   const [state, setState] = useState(() => form.getSnapshot())
   useEffect(() => form.subscribe(() => { setState(form.getSnapshot()) }), [form])
   return state
-}
-
-/**
- * Derive what one accent becomes where it is rendered as text.
- * @param accent - the draft's accent literal.
- * @returns one value per shell, or undefined when the literal does not parse.
- */
-function accentPreview(accent: string): AccentPreview | undefined {
-  const fill = parseColor(accent)
-  if (fill === undefined) return undefined
-  const lightPage = parseColor(LIGHT_SHELL.page)
-  const darkPage = parseColor(DARK_SHELL.page)
-  if (lightPage === undefined || darkPage === undefined) return undefined
-  const derive = (page: Rgb, direction: 'darken' | 'lighten'): AccentText => {
-    const value = readableOn(fill, page, direction)
-    const ratio = contrast(parseColor(value) ?? fill, page)
-    return { value, ratio: `${ratio.toFixed(1)}:1` }
-  }
-  return { light: derive(lightPage, 'darken'), dark: derive(darkPage, 'lighten') }
-}
-
-/** One labelled control row. */
-function Field(props: { label: string; hint: string; error?: string; children: ReactNode }): ReactNode {
-  return (
-    <label className="dshMimoField">
-      <span className="dshMimoFieldLabel">{props.label}</span>
-      <span className="dshMimoFieldControl">{props.children}</span>
-      <span className={props.error === undefined ? 'dshMimoFieldHint' : 'dshMimoError'}>
-        {props.error ?? props.hint}
-      </span>
-    </label>
-  )
-}
-
-/** One boolean switch row. */
-function Toggle(props: { label: string; hint: string; checked: boolean; disabled: boolean; onChange: (next: boolean) => void }): ReactNode {
-  return (
-    <label className="dshMimoToggle">
-      <input
-        type="checkbox"
-        checked={props.checked}
-        disabled={props.disabled}
-        onChange={event => { props.onChange(event.target.checked) }}
-      />
-      <span>
-        <span className="dshMimoFieldLabel">{props.label}</span>
-        <span className="dshMimoFieldHint">{props.hint}</span>
-      </span>
-    </label>
-  )
-}
-
-/** One derived accent-text value, its swatch and its ratio. */
-function AccentTextPair(props: { label: string; entry: AccentText }): ReactNode {
-  return (
-    <span className="dshMimoPreviewPair">
-      <span className="dshMimoSwatchSmall" style={{ background: props.entry.value }} />
-      {props.label}
-      {' '}
-      <code>{props.entry.value}</code>
-      {` (${props.entry.ratio})`}
-    </span>
-  )
 }
 
 /**

@@ -9,38 +9,7 @@
 
 import en from '../../locale/en.json'
 import zh from '../../locale/zh.json'
-import type { MimoTheme } from '../config.ts'
-
-/** The knobs the card edits, in the order it lists them. */
-export const FIELD_IDS = ['theme', 'accent', 'pattern', 'patternOpacity', 'patternText'] as const
-
-/** One knob the card edits. */
-export type SectionField = typeof FIELD_IDS[number]
-
-/** The knobs an edit can be rejected on. */
-export type ErrorField = 'theme' | 'accent' | 'patternOpacity' | 'patternText'
-
-/** Every string the card renders. */
-export interface PanelCopy {
-  readonly noteReady: string
-  readonly noteLoading: string
-  readonly noteUnavailable: string
-  readonly noteStaleHost: string
-  readonly save: string
-  readonly reset: string
-  readonly stateSaved: string
-  readonly stateDirty: string
-  readonly stateClean: string
-  readonly stateLocked: string
-  /** Labels for the two derived accent-text values. */
-  readonly accentText: { readonly light: string, readonly dark: string }
-  /** The shell choices, in the order the picker lists them. */
-  readonly themeOptions: readonly { readonly value: MimoTheme, readonly label: string }[]
-  /** Label and hint per knob. */
-  readonly field: Readonly<Record<SectionField, { readonly label: string, readonly hint: string }>>
-  /** Message per rejectable knob. */
-  readonly error: Readonly<Record<ErrorField, string>>
-}
+import type { PanelCopy } from '../types/panel.ts'
 
 /**
  * The keys this module reads, so a test can prove both dictionaries carry them.
@@ -118,6 +87,8 @@ export function panelCopy(language?: string): PanelCopy {
       { value: 'light', label: read('fieldThemeLight') },
       { value: 'dark', label: read('fieldThemeDark') },
     ],
+    // Keyed by the one field list the card edits and the Host publishes: a knob
+    // added there is a type error here until it has copy.
     field: {
       theme: { label: read('fieldTheme'), hint: read('fieldThemeHint') },
       accent: { label: read('fieldAccent'), hint: read('fieldAccentHint') },

@@ -48,15 +48,15 @@
  *   strip of a macOS desktop window would stop moving the window.
  */
 
-import { MARQUEE_CLASS, MARQUEE_TRACK_CLASS, SKIN_ATTRIBUTE, STYLE_ID } from './contract.ts'
-import { MARQUEE_HEIGHT, MONO_STACK, SANS_STACK, SERIF_STACK } from './palette.ts'
+import { MARQUEE_CLASS, MARQUEE_TRACK_CLASS, SKIN_ATTRIBUTE, STYLE_ID } from '../../constants/dom.ts'
+import { MARQUEE_HEIGHT, MONO_STACK, SANS_STACK, SERIF_STACK } from '../../constants/palette.ts'
 
 /** Install the stylesheet once per page. */
-export function installStyles(doc: Document = document): void {
+export function installPageStyles(doc: Document = document): void {
   if (doc.getElementById(STYLE_ID) !== null) return
   const style = doc.createElement('style')
   style.id = STYLE_ID
-  style.textContent = CSS
+  style.textContent = PAGE_CSS
   doc.head.appendChild(style)
 }
 
@@ -66,7 +66,7 @@ export function installStyles(doc: Document = document): void {
  * product, and that the layout rules address the product's documented
  * attributes rather than generated class names.
  */
-export const CSS = `
+export const PAGE_CSS = `
 /* ---------- the band ---------- */
 
 .${MARQUEE_CLASS} {

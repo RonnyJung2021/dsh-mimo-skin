@@ -10,8 +10,10 @@
  * user keeps control of light and dark, and MiMo has a shell for each.
  */
 
-import { DARK_ATTRIBUTE, SKIN_ATTRIBUTE, THEME_DARK_ATTRIBUTE } from './contract.ts'
-import { PALETTE_VARIABLES, shellFor, skinVariables, type MimoSkinInput } from './palette.ts'
+import { DARK_ATTRIBUTE, SKIN_ATTRIBUTE, THEME_DARK_ATTRIBUTE } from '../constants/dom.ts'
+import { PALETTE_VARIABLES } from '../constants/palette.ts'
+import type { MimoSkinInput } from '../types/palette.ts'
+import { shellFor, skinVariables } from './palette.ts'
 
 /** The document-level half of the skin. */
 export interface SkinApplier {

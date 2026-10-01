@@ -16,7 +16,7 @@ import assert from 'node:assert/strict'
 import { loadModule } from './load-module.mjs'
 
 const { apply, Config } = await loadModule('index.ts')
-const { DEFAULT_ACCENT, DEFAULT_GLOBAL_NAME, DEFAULT_PATTERN_TEXT } = await loadModule('config.ts')
+const { DEFAULT_ACCENT, DEFAULT_GLOBAL_NAME, DEFAULT_PATTERN_TEXT } = await loadModule('constants/plugin.ts')
 
 /** Every knob at its schema default, as an empty patch resolves. */
 const DEFAULT_PUBLISHED = {

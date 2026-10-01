@@ -12,15 +12,8 @@
  * picked.
  */
 
-/** One 8-bit-per-channel colour. */
-export interface Rgb {
-  /** Red, 0…255. */
-  readonly r: number
-  /** Green, 0…255. */
-  readonly g: number
-  /** Blue, 0…255. */
-  readonly b: number
-}
+import type { TextDirection } from '../enums/shell.ts'
+import type { Rgb } from '../types/color.ts'
 
 /** Accepted literal forms: `#rgb`, `#rrggbb`. */
 const HEX = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/iu
@@ -127,7 +120,7 @@ export function contrast(a: Rgb, b: Rgb): number {
 export function readableOn(
   color: Rgb,
   page: Rgb,
-  direction: 'darken' | 'lighten',
+  direction: TextDirection,
   floor: number = AA_TEXT_CONTRAST,
 ): string {
   if (contrast(color, page) >= floor) return toHex(color)

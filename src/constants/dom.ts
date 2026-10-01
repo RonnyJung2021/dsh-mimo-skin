@@ -22,3 +22,6 @@ export const MARQUEE_CLASS = 'dsh-mimo-marquee'
 
 /** Class of the one line inside that band, the element the animation moves. */
 export const MARQUEE_TRACK_CLASS = 'dsh-mimo-marquee-track'
+
+/** Attribute marking the card's own stylesheet, so one install can be disposed. */
+export const PANEL_STYLE_ATTRIBUTE = 'data-dsh-mimo-panel-styles'

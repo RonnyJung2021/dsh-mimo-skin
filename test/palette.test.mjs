@@ -13,14 +13,16 @@ import { contrast } from './contrast.mjs'
 const {
   DARK_SHELL,
   LIGHT_SHELL,
+  shellFor,
+  skinVariables,
+} = await loadModule('client/palette.ts')
+const {
   MARQUEE_HEIGHT,
   MONO_STACK,
   PALETTE_VARIABLES,
   SANS_STACK,
   SERIF_STACK,
-  shellFor,
-  skinVariables,
-} = await loadModule('client/palette.ts')
+} = await loadModule('constants/palette.ts')
 
 const INPUT = {
   theme: 'auto',

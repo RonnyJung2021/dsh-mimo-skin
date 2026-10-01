@@ -9,24 +9,25 @@ import assert from 'node:assert/strict'
 import { loadModule } from './load-module.mjs'
 
 const {
-  PUBLISHED_KEYS,
   SECTION_DEFAULTS,
-  SETTINGS_NAMESPACE,
-  hostPublished,
   invalidFields,
   sectionOf,
   sectionOps,
-} = await loadModule('client/settings.ts')
-const { FIELD_IDS } = await loadModule('client/copy.ts')
-const { DEFAULT_ACCENT, DEFAULT_PATTERN_TEXT, resolveSettings } = await loadModule('config.ts')
+} = await loadModule('utils/section.ts')
+const { hostPublished } = await loadModule('client/published.ts')
+const { SECTION_FIELDS } = await loadModule('constants/config.ts')
+const { SETTINGS_NAMESPACE, DEFAULT_ACCENT, DEFAULT_PATTERN_TEXT } = await loadModule('constants/plugin.ts')
+const { resolveSettings } = await loadModule('utils/config.ts')
 
 test('the namespace is the loader row id, which is the package name', () => {
   assert.equal(SETTINGS_NAMESPACE, 'dsh-mimo-skin')
 })
 
-test('the published keys are exactly the knobs the card edits', () => {
-  assert.deepEqual([...PUBLISHED_KEYS], ['theme', 'accent', 'pattern', 'patternOpacity', 'patternText'])
-  assert.deepEqual([...PUBLISHED_KEYS], [...FIELD_IDS])
+test('the row section is the five page knobs, in the order the card lists them', () => {
+  // One list, read by the Host when it publishes and by the card when it edits.
+  // The two used to be separate lists with separate names, which is exactly how
+  // a published field and an editable one drift apart.
+  assert.deepEqual([...SECTION_FIELDS], ['theme', 'accent', 'pattern', 'patternOpacity', 'patternText'])
 })
 
 test('the reset table is the plugin one default table', () => {

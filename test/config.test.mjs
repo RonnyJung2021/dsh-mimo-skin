@@ -8,12 +8,12 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { loadModule } from './load-module.mjs'
 
+const { resolveSettings } = await loadModule('utils/config.ts')
 const {
-  resolveSettings,
   DEFAULT_ACCENT,
   DEFAULT_GLOBAL_NAME,
   DEFAULT_PATTERN_TEXT,
-} = await loadModule('config.ts')
+} = await loadModule('constants/plugin.ts')
 
 test('resolveSettings returns the documented defaults', () => {
   assert.deepEqual(resolveSettings(undefined), {

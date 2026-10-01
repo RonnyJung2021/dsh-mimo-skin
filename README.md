@@ -207,10 +207,15 @@ dsh plugin --profile web remove dsh-mimo-skin
 ```
 dsh-mimo-skin/
 ├── lib/{index.js,client.js}  # 两个半边：宿主（自包含 ESM）+ 浏览器（module-table），都入库
-├── src/index.ts              # 宿主半边：发布设置、声明 Config
-├── src/config.ts             # 配置字段与逐字段回退
-├── src/color.ts              # 颜色解析、混合与 AA 对比度推导
-├── src/client/               # 浏览器半边：styles / palette / skin / marquee / settings / panel
+├── src/index.ts              # 宿主入口；Loader 只认这里，实现在 src/host/
+├── src/host/                 # 宿主半边：schema（Config）/ publish（发布）/ index（apply）
+├── src/client/               # 浏览器半边：index（apply）/ palette / skin / marquee / published
+│   ├── components/           #   卡片：Panel.tsx + controls.tsx
+│   └── styles/               #   两份样式表：page（页面换肤）+ panel（插件卡片）
+├── src/constants/            # 常量：plugin（id 与默认值）/ config（字段表）/ dom（DOM 契约）/ palette（字体栈、变量名）
+├── src/enums/                # 枚举：theme / shell / settings
+├── src/types/                # 类型：config / palette / settings / panel / host / color
+├── src/utils/                # 纯函数：color / value / volatile / config / section
 ├── locale/{zh,en}.json       # 卡片文案，英文是回退语言
 ├── test/                     # 101 项单测
 ├── docs/                     # README 用的截图
@@ -219,6 +224,8 @@ dsh-mimo-skin/
 ├── cordis.patch.yml          # bundle patch：装上即生效的那一行
 └── CHANGELOG.md / THIRD_PARTY_NOTICES.md / LICENSE
 ```
+
+分层的规矩见 [`src/README.md`](src/README.md)：这套 `constants / enums / types / utils + host / client` 结构不依赖本插件的任何特性，别的 DSH 插件页面可以照搬。
 
 ### 两个半边
 

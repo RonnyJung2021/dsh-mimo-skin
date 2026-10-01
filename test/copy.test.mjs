@@ -15,7 +15,8 @@ const read = name => JSON.parse(readFileSync(join(root, 'locale', `${name}.json`
 const zh = read('zh')
 const en = read('en')
 
-const { COPY_KEYS, FIELD_IDS, panelCopy } = await loadModule('client/copy.ts')
+const { COPY_KEYS, panelCopy } = await loadModule('client/copy.ts')
+const { SECTION_FIELDS } = await loadModule('constants/config.ts')
 
 test('the card shows the package name, not a translated title', () => {
   // 5.6: the plugin page reads `meta.title` from here, and the card must not
@@ -74,8 +75,8 @@ test('the card reads the page language when it is not told one', () => {
 
 test('every knob has a label, a hint and, where it can be refused, a message', () => {
   const copy = panelCopy('en')
-  assert.deepEqual(Object.keys(copy.field), [...FIELD_IDS])
-  for (const field of FIELD_IDS) {
+  assert.deepEqual(Object.keys(copy.field), [...SECTION_FIELDS])
+  for (const field of SECTION_FIELDS) {
     assert.ok(copy.field[field].label.length > 0, field)
     assert.ok(copy.field[field].hint.length > 0, field)
   }

@@ -15,7 +15,7 @@
  * and re-attached if something removes it.
  */
 
-import { MARQUEE_CLASS, MARQUEE_TRACK_CLASS } from './contract.ts'
+import { MARQUEE_CLASS, MARQUEE_TRACK_CLASS } from '../constants/dom.ts'
 
 /** One mounted band. */
 export interface Marquee {

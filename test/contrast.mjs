@@ -1,7 +1,7 @@
 /**
  * An independent WCAG contrast implementation for the tests.
  *
- * Deliberately not the plugin's own: `src/color.ts` is what derives the accent
+ * Deliberately not the plugin's own: `src/utils/color.ts` is what derives the accent
  * values, so measuring them with the same code would only prove it agrees with
  * itself. This one is written straight from the WCAG definition.
  */

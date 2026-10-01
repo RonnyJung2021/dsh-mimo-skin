@@ -227,10 +227,15 @@ You can also skip the YAML and use the plugin's own card instead:
 ```
 dsh-mimo-skin/
 ├── lib/{index.js,client.js}  # both halves: Host (self-contained ESM) + browser (module-table), committed
-├── src/index.ts              # Host half: publishes the settings, declares Config
-├── src/config.ts             # config fields and their per-field fallbacks
-├── src/color.ts              # colour parsing, mixing and the AA contrast derivation
-├── src/client/               # browser half: styles / palette / skin / marquee / settings / panel
+├── src/index.ts              # Host entry; the Loader only knows this path, the code sits in src/host/
+├── src/host/                 # Host half: schema (Config) / publish / index (apply)
+├── src/client/               # browser half: index (apply) / palette / skin / marquee / published
+│   ├── components/           #   the card: Panel.tsx + controls.tsx
+│   └── styles/               #   the two stylesheets: page (the skin) + panel (the card)
+├── src/constants/            # constants: plugin (id, defaults) / config (field list) / dom / palette
+├── src/enums/                # enums: theme / shell / settings
+├── src/types/                # types: config / palette / settings / panel / host / color
+├── src/utils/                # pure functions: color / value / volatile / config / section
 ├── locale/{zh,en}.json       # card copy; English is the fallback language
 ├── test/                     # 101 unit tests
 ├── docs/                     # the screenshots this README uses
@@ -239,6 +244,9 @@ dsh-mimo-skin/
 ├── cordis.patch.yml          # the bundle patch: the row that activates on install
 └── CHANGELOG.md / THIRD_PARTY_NOTICES.md / LICENSE
 ```
+
+The layering rules are in [`src/README.md`](src/README.md): nothing in that `constants / enums / types /
+utils + host / client` layout is specific to this skin, so another DSH plugin page can copy it.
 
 ### The two halves
 

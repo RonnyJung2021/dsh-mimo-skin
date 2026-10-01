@@ -9,8 +9,9 @@ import { loadModule } from './load-module.mjs'
 import { createFakeDocument } from './fake-dom.mjs'
 
 const { createSkin } = await loadModule('client/skin.ts')
-const { SKIN_ATTRIBUTE, DARK_ATTRIBUTE, THEME_DARK_ATTRIBUTE } = await loadModule('client/contract.ts')
-const { LIGHT_SHELL, DARK_SHELL, PALETTE_VARIABLES } = await loadModule('client/palette.ts')
+const { SKIN_ATTRIBUTE, DARK_ATTRIBUTE, THEME_DARK_ATTRIBUTE } = await loadModule('constants/dom.ts')
+const { LIGHT_SHELL, DARK_SHELL } = await loadModule('client/palette.ts')
+const { PALETTE_VARIABLES } = await loadModule('constants/palette.ts')
 
 const INPUT = {
   theme: 'auto',

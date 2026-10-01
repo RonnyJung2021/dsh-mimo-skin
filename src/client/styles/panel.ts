@@ -1,13 +1,15 @@
 /**
  * The card's stylesheet.
  *
- * Separate from `styles.ts`, which is scoped to the skinned page: this sheet is
- * for the plugin's own card in 侧栏「插件」, whose surrounding layout the skin does
- * not own. Tokens only, so it follows whatever theme is live.
+ * Separate from `styles/page.ts`, which is scoped to the skinned page: this sheet
+ * is for the plugin's own card in 侧栏「插件」, whose surrounding layout the skin
+ * does not own. Tokens only, so it follows whatever theme is live.
  */
 
+import { PANEL_STYLE_ATTRIBUTE } from '../../constants/dom.ts'
+
 /** Stylesheet text for the plugin card. */
-export const PANEL_STYLES = `
+export const PANEL_CSS = `
 .dshMimoPanel {
   display: flex;
   flex-direction: column;
@@ -163,8 +165,8 @@ export const PANEL_STYLES = `
  */
 export function installPanelStyles(doc: Document): () => void {
   const element = doc.createElement('style')
-  element.setAttribute('data-dsh-mimo-panel-styles', '')
-  element.textContent = PANEL_STYLES
+  element.setAttribute(PANEL_STYLE_ATTRIBUTE, '')
+  element.textContent = PANEL_CSS
   doc.head.append(element)
   return () => { element.remove() }
 }
