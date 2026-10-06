@@ -1,19 +1,29 @@
+<div align="center">
+
 # dsh-mimo-skin
 
-**中文** | [English](README.en.md)
+给 DSH Web GUI 换一套外观的**纯皮肤插件** —— 暖白纸面、黑色发丝分隔线、衬线阅读正文、橙色点缀。
 
-![version](https://img.shields.io/badge/version-0.1.1-blue)
-![license](https://img.shields.io/badge/license-MIT-green)
-![DSH](https://img.shields.io/badge/DSH-%3E%3D0.1.5--rc.2-8b5cf6)
-![tests](https://img.shields.io/badge/tests-105%20passing-brightgreen)
-![node](https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24-339933)
+中文 / [English](README.en.md)
 
-> 给 DSH Web GUI 换一套外观的**纯皮肤插件** —— 暖白纸面、黑色发丝分隔线、衬线阅读正文、橙色点缀。
+[安装](#安装) · [首次使用](#首次使用) · [配置](#配置) · [结构](#结构) · [开发](#开发)
 
-[安装](#安装) · [首次使用](#首次使用) · [English](README.en.md)
+<p>
+  <a href="https://www.npmjs.com/package/dsh-mimo-skin"><img src="https://img.shields.io/badge/version-0.1.1-blue" alt="version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
+  <img src="https://img.shields.io/badge/DSH-%3E%3D0.1.5--rc.2-8b5cf6" alt="DSH">
+  <img src="https://img.shields.io/badge/tests-105%20passing-brightgreen" alt="tests">
+  <img src="https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24-339933" alt="node">
+</p>
+
+</div>
+
+***
 
 <!-- 图片走仓库的绝对地址：npm 页面渲染 README 时解析不到相对路径，写成 docs/… 会裂成图框。 -->
-![前后对比](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-compare.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-compare.png" alt="前后对比" width="100%">
+</p>
 
 上图是同一台引擎、同一个页面：**上**是产品自己的外壳，**下**是套上皮肤之后。两张都是从真引擎、
 真浏览器上截的，不是示意图。
@@ -66,7 +76,9 @@
 | 悬浮 / 按下 | 黑色 4% / 8% 洗 | 白色 7% / 12% 洗 |
 | 投影 | 黑 8% | 黑 50% |
 
-![深色](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-dark.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-dark.png" alt="深色" width="100%">
+</p>
 
 **配色外壳**默认 `auto`：跟随 DSH 自己的深浅色设置 —— 你在产品里切明暗，皮肤跟着重画。
 
@@ -77,13 +89,17 @@
 浅色下往黑里走、深色下往白里走，直到对比度达标。默认 `#ff6700` 因此得到浅色 `#bf4d00`（4.60:1）、
 深色 `#ff6700`（7.19:1）。换别的颜色这两档会重算，AA 下限不会掉。
 
-![插件卡片](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-card.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-card.png" alt="插件卡片" width="100%">
+</p>
 
 卡片里会把两个算出来的值直接显示给你看（含对比度）。
 
 ### 顶部滚动字标
 
-![上方字标](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-light.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-light.png" alt="上方字标" width="100%">
+</p>
 
 一条固定在整个窗口顶端的横条，里面是一行横向滚动的淡字：
 
@@ -105,7 +121,9 @@
 - **关闭态开关**：产品把 `--dsw-alias-border-l3` 当关闭态**底色**用（不是描边），而它在皮肤里是
   纯黑发丝；皮肤改用 `--dsh-mimo-track` 重画关闭态，打开态保持产品自己的品牌填充。
 
-![插件页](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-plugins.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-plugins.png" alt="插件页" width="100%">
+</p>
 
 上图里 8 个官方插件的开关关闭态是浅灰洗，`dsh-mimo-skin` 自己的打开态是产品品牌填充。
 

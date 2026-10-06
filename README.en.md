@@ -1,21 +1,30 @@
+<div align="center">
+
 # dsh-mimo-skin
 
-[中文](README.md) | **English**
+A **skin-only plugin** for the DSH Web GUI — warm off-white paper, black hairline rules, a serif reading face and an orange accent.
 
-![version](https://img.shields.io/badge/version-0.1.1-blue)
-![license](https://img.shields.io/badge/license-MIT-green)
-![DSH](https://img.shields.io/badge/DSH-%3E%3D0.1.5--rc.2-8b5cf6)
-![tests](https://img.shields.io/badge/tests-105%20passing-brightgreen)
-![node](https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24-339933)
+[中文](README.md) / English
 
-> A **skin-only plugin** for the DSH Web GUI — warm off-white paper, black hairline rules,
-> a serif reading face and an orange accent.
+[Install](#install) · [First run](#first-run) · [Configuration](#configuration) · [Layout](#layout) · [Development](#development)
 
-[Install](#install) · [First run](#first-run) · [中文](README.md)
+<p>
+  <a href="https://www.npmjs.com/package/dsh-mimo-skin"><img src="https://img.shields.io/badge/version-0.1.1-blue" alt="version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
+  <img src="https://img.shields.io/badge/DSH-%3E%3D0.1.5--rc.2-8b5cf6" alt="DSH">
+  <img src="https://img.shields.io/badge/tests-105%20passing-brightgreen" alt="tests">
+  <img src="https://img.shields.io/badge/node-%5E22.19%20%7C%7C%20%3E%3D24-339933" alt="node">
+</p>
+
+</div>
+
+***
 
 <!-- Images use the repository's absolute URL: npm cannot resolve a relative path when it renders
      this README, and `docs/…` would show up as a broken-image box. -->
-![Before and after](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-compare.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-compare.png" alt="Before and after" width="100%">
+</p>
 
 Same engine, same page: **top** is the product's own shell, **bottom** is the same page with the skin
 on. Both are screenshots of a real engine in a real browser, not mock-ups.
@@ -69,7 +78,9 @@ The dark shell **is the same rules flipped over**, not "the background turned do
 | Hover / pressed | black 4% / 8% wash | white 7% / 12% wash |
 | Shadow | black 8% | black 50% |
 
-![Dark shell](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-dark.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-dark.png" alt="Dark shell" width="100%">
+</p>
 
 **The shell setting** defaults to `auto`: it follows the product's own light/dark setting — you switch
 the product, the skin repaints.
@@ -82,13 +93,17 @@ variant it renders as text** — darkened on the warm page, lightened on the bla
 the floor. The default `#ff6700` therefore yields `#bf4d00` in light (4.60:1) and `#ff6700` in dark
 (7.19:1). Pick another colour and both are recomputed; the AA floor does not move.
 
-![The plugin card](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-card.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-card.png" alt="The plugin card" width="100%">
+</p>
 
 The card shows both derived values, with their contrast ratios.
 
 ### The scrolling mark
 
-![The mark at the top](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-light.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-light.png" alt="The mark at the top" width="100%">
+</p>
 
 A bar fixed to the top of the window, carrying one line of faint text that scrolls sideways:
 
@@ -118,7 +133,9 @@ A bar fixed to the top of the window, carrying one line of faint text that scrol
   (not an outline), and that token is a black hairline in the skin; the skin repaints the off state with
   `--dsh-mimo-track` instead, and leaves the on state on the product's own brand fill.
 
-![The plugins page](https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-plugins.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/RonnyJung2021/dsh-mimo-skin/main/docs/preview-plugins.png" alt="The plugins page" width="100%">
+</p>
 
 Above: the eight official plugins' off switches are a light grey wash, and `dsh-mimo-skin`'s own on
 switch keeps the product's brand fill.
