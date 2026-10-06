@@ -5,13 +5,17 @@
  * component, so the panel is one small component — plus the leaf controls it
  * renders — and nothing else.
  *
- * Unlike the first cut of this card, edits do **not** write through on every
- * keystroke. A draft lives here, Save is what commits it, and Save is refused
- * while the draft holds a field the settings service could not accept — a colour
- * literal that does not parse, an ink strength outside 0…1, a blank mark. That
- * is also why the text inputs are controlled: with a local draft there is no
- * round trip to lose the caret to, so the value-keying the write-through version
- * needed is gone.
+ * There is no Save button: a draft lives here and writes itself. Every edit
+ * restarts one timer, so a burst of adjustments lands as a single write once the
+ * user has been still — after {@link SAVE_DEBOUNCE_PICK} for a picker or a
+ * switch, which is one decision, and after {@link SAVE_DEBOUNCE_ADJUST} for a
+ * knob that is typed or stepped, so that a write never lands in the middle of an
+ * adjustment and fights the hand making it. A draft holding a field the settings
+ * service could not accept — a colour literal that does not parse, an ink
+ * strength outside 0…1, a blank mark — is never written, and the message under
+ * that field is the reason it is still sitting here. That is also why the text
+ * inputs are controlled: with a local draft there is no round trip to lose the
+ * caret to, so the value-keying the write-through version needed is gone.
  *
  * The committed values still arrive from the Settings form, which is the only
  * durable store: a choice survives a reload, a new engine port, and a different
@@ -20,7 +24,14 @@
 
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
-import { PATTERN_HEIGHT_MAX, PATTERN_HEIGHT_MIN, type ErrorField } from '../../constants/config.ts'
+import {
+  CONTINUOUS_FIELDS,
+  PATTERN_HEIGHT_MAX,
+  PATTERN_HEIGHT_MIN,
+  SAVE_DEBOUNCE_ADJUST,
+  SAVE_DEBOUNCE_PICK,
+  type ErrorField,
+} from '../../constants/config.ts'
 import type { MimoPanelProps, PanelCopy } from '../../types/panel.ts'
 import type { ConfigFormLike, ConfigFormView, MimoSection } from '../../types/settings.ts'
 import { invalidFields, sectionOps, SECTION_DEFAULTS } from '../../utils/section.ts'
@@ -60,6 +71,12 @@ export function MimoSkinPanel(props: MimoPanelProps): ReactNode {
   const invalid = invalidFields(draft)
   const dirty = JSON.stringify(draft) !== committedKey
 
+  // A knob the user is still moving waits longer than one they have finished
+  // picking, and the pending draft is classified as a whole: a mark typed a
+  // moment ago is still settling even when the pick after it was a single click.
+  const stillAdjusting = CONTINUOUS_FIELDS.some(field => draft[field] !== committed[field])
+  const delay = stillAdjusting ? SAVE_DEBOUNCE_ADJUST : SAVE_DEBOUNCE_PICK
+
   /**
    * Write one field of the draft.
    * @param field - field name inside the row's config section.
@@ -69,13 +86,14 @@ export function MimoSkinPanel(props: MimoPanelProps): ReactNode {
     setDraft(current => ({ ...current, [field]: next }))
   }
 
-  /**
-   * Commit one whole section.
-   * @param next - the values to write.
-   */
-  const save = (next: MimoSection): void => {
-    void form.mutate(sectionOps(next))
-  }
+  // The draft writes itself: every edit restarts this timer, and the values are
+  // applied and stored once the user has been still for `delay`. A draft the
+  // settings service would refuse is left unwritten on purpose.
+  useEffect(() => {
+    if (!writable || !dirty || invalid.length > 0) return
+    const timer = setTimeout(() => { void form.mutate(sectionOps(draft)) }, delay)
+    return () => { clearTimeout(timer) }
+  }, [draft, dirty, delay, writable, invalid.length, form])
 
   const note = state.status === 'unavailable'
     ? hostPublished ? copy.noteUnavailable : copy.noteStaleHost
@@ -175,18 +193,8 @@ export function MimoSkinPanel(props: MimoPanelProps): ReactNode {
       <div className="dshMimoFoot">
         <button
           type="button"
-          disabled={!writable || invalid.length > 0 || !dirty}
-          onClick={() => { save(draft) }}
-        >
-          {copy.save}
-        </button>
-        <button
-          type="button"
           disabled={!writable || committedKey === JSON.stringify(SECTION_DEFAULTS)}
-          onClick={() => {
-            setDraft(SECTION_DEFAULTS)
-            save(SECTION_DEFAULTS)
-          }}
+          onClick={() => { setDraft(SECTION_DEFAULTS) }}
         >
           {copy.reset}
         </button>

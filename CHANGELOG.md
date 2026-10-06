@@ -4,7 +4,7 @@ All notable changes to this plugin are recorded here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the version
 follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.2.0] - 2026-10-06
 
 ### Added
 
@@ -16,6 +16,15 @@ follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Changed
 
+- **The card writes itself, and the Save button is gone.** An edit applies and
+  persists on its own once the hand stops: 100 ms after a pick — the shell
+  dropdown or the mark's switch — and 600 ms after a knob that is typed or
+  stepped (the accent, the mark's text, its ink and its height). A burst of
+  spinner clicks or keystrokes therefore lands as one write instead of one per
+  click, and no write lands in the middle of an adjustment to fight the hand
+  making it. **Restore defaults** rides the same path, and a draft the settings
+  service would refuse is still never written — the message under that field is
+  the reason it is still sitting there.
 - **The bar is half as tall by default** — 26px instead of 52px. A bar set back
   to 52 looks exactly as it did: 0.58 × 52 is the 30px face the old stylesheet
   clamped to at desktop widths.

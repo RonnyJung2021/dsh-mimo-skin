@@ -19,7 +19,7 @@ import type { PanelCopy } from '../types/panel.ts'
  */
 export const COPY_KEYS = [
   'noteReady', 'noteLoading', 'noteUnavailable', 'noteStaleHost',
-  'save', 'reset', 'stateSaved', 'stateDirty', 'stateClean', 'stateLocked',
+  'reset', 'stateSaved', 'stateDirty', 'stateClean', 'stateLocked',
   'fieldTheme', 'fieldThemeHint', 'fieldThemeAuto', 'fieldThemeLight', 'fieldThemeDark',
   'fieldAccent', 'fieldAccentHint', 'fieldAccentLight', 'fieldAccentDark',
   'fieldPattern', 'fieldPatternHint',
@@ -76,7 +76,6 @@ export function panelCopy(language?: string): PanelCopy {
     noteLoading: read('noteLoading'),
     noteUnavailable: read('noteUnavailable'),
     noteStaleHost: read('noteStaleHost'),
-    save: read('save'),
     reset: read('reset'),
     stateSaved: read('stateSaved'),
     stateDirty: read('stateDirty'),

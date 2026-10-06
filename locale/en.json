@@ -4,15 +4,14 @@
     "description": "Repaints the whole GUI as mimo.xiaomi.com: warm off-white paper, hairline black rules, a serif reading face and the orange accent, with a dark shell that is the same syntax flipped to black paper and white ink. The shell, the accent and the scrolling mark are edited on this plugin's own card."
   },
   "panel": {
-    "noteReady": "These values live in the profile's configuration, so they survive a port change and a restart. Nothing is applied until you press Save, and Save validates first.",
+    "noteReady": "These values live in the profile's configuration, so they survive a port change and a restart. A change applies and saves itself once you stop adjusting it, and it is validated before the write.",
     "noteLoading": "Reading settings…",
     "noteUnavailable": "This engine offers no settings interface: changes here last for this page only, and a new port falls back to the profile's values.",
     "noteStaleHost": "The engine is still running an older Host half of this plugin (this page is already the new version). The Host half loads once, when the engine process starts, so reloading the page cannot replace it. The engine itself has to restart — stop it and start it again (that interrupts a running conversation, and this page has to be reopened). Afterwards these changes are saved to the profile.",
-    "save": "Save",
     "reset": "Restore defaults",
     "stateSaved": "The saved values are the ones the page is using",
-    "stateDirty": "There are unsaved changes",
-    "stateClean": "Edit a field to enable Save",
+    "stateDirty": "There are changes not yet written",
+    "stateClean": "Changes apply and save themselves",
     "stateLocked": "This form is not writable",
     "fieldTheme": "Shell",
     "fieldThemeHint": "Follows the product's own light/dark setting by default.",

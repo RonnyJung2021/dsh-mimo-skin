@@ -38,7 +38,6 @@ export interface PanelCopy {
   readonly noteLoading: string
   readonly noteUnavailable: string
   readonly noteStaleHost: string
-  readonly save: string
   readonly reset: string
   readonly stateSaved: string
   readonly stateDirty: string

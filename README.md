@@ -9,7 +9,7 @@
 [安装](#安装) · [首次使用](#首次使用) · [配置](#配置) · [结构](#结构) · [开发](#开发)
 
 <p>
-  <a href="https://www.npmjs.com/package/dsh-mimo-skin"><img src="https://img.shields.io/badge/version-0.1.1-blue" alt="version"></a>
+  <a href="https://www.npmjs.com/package/dsh-mimo-skin"><img src="https://img.shields.io/badge/version-0.2.0-blue" alt="version"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
   <img src="https://img.shields.io/badge/DSH-%3E%3D0.1.5--rc.2-8b5cf6" alt="DSH">
   <img src="https://img.shields.io/badge/tests-105%20passing-brightgreen" alt="tests">
@@ -174,7 +174,7 @@ node scripts/install-profile.mjs --home /path/to/home --uninstall  # 卸
 
 1. 按上面任一种方式装上并**启用**。
 2. 打开 GUI，侧栏 **插件 → 已安装 → dsh-mimo-skin**，卡片下面是这个插件**自己的设置页**。
-3. 改外观项，点 **保存**；页面立刻重画。
+3. 改外观项，停手后自动应用并保存；页面立刻重画。
 
 ### 卸载
 
@@ -217,9 +217,10 @@ dsh plugin --profile web remove dsh-mimo-skin
 
 也可以不改 YAML，直接在上面那张卡片里改：
 
-- **改完点「保存」才生效**（不是改一项立刻重画），另有一颗**「恢复默认」**把所有外观项写回默认。
-- **保存前先校验**：颜色值要合法、浓度要落在 0–1、高度要落在 8–200、字标文字不能为空。不合法时
-  「保存」是灰的，字段下面直接说明哪里不行。
+- **没有「保存」按钮**：改动在停手后自己写进去 —— 下拉、开关这类一次点完的等 100 ms，数值、文字
+  这类能连着调的等 600 ms；另有一颗**「恢复默认」**把所有外观项写回默认。
+- **写入前先校验**：颜色值要合法、浓度要落在 0–1、高度要落在 8–200、字标文字不能为空。不合法时
+  不写进去，字段下面直接说明哪里不行。
 - **改动能留住**：值写进 profile 的配置，换端口、重启、在面板与桌面窗口之间切换都还在，页面不留副本。
 - 三套字体**不在卡片里**：皮肤不带字体文件，手填字体栈只会指向这台机器可能没装的字族，
   所以字体栈固定用插件内置的那几套。
@@ -307,7 +308,8 @@ Noto Serif SC / 宋体 / Georgia。要 1:1 复刻得自带 woff2，那要先解�
 
 ## Roadmap
 
-- **已发布**：`v0.1.0` 首个版本；`v0.1.1` 让 git 直装可用（`lib/` 入库、构建从 `prepare` 挪到 `prepack`）。
+- **已发布**：`v0.1.0` 首个版本；`v0.1.1` 让 git 直装可用（`lib/` 入库、构建从 `prepare` 挪到 `prepack`）；
+  `v0.2.0` 加了 `patternHeight`，并把卡片的「保存」换成防抖自动写入（下拉/开关 100 ms、数值/文字 600 ms）。
 - **计划中**：暂无排期。候选是自带字体（需先解决 MiSans 授权），以及跟随参考站后续的改版。
 
 细节见 [CHANGELOG.md](CHANGELOG.md)。

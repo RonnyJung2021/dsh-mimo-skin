@@ -9,7 +9,7 @@ A **skin-only plugin** for the DSH Web GUI — warm off-white paper, black hairl
 [Install](#install) · [First run](#first-run) · [Configuration](#configuration) · [Layout](#layout) · [Development](#development)
 
 <p>
-  <a href="https://www.npmjs.com/package/dsh-mimo-skin"><img src="https://img.shields.io/badge/version-0.1.1-blue" alt="version"></a>
+  <a href="https://www.npmjs.com/package/dsh-mimo-skin"><img src="https://img.shields.io/badge/version-0.2.0-blue" alt="version"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license"></a>
   <img src="https://img.shields.io/badge/DSH-%3E%3D0.1.5--rc.2-8b5cf6" alt="DSH">
   <img src="https://img.shields.io/badge/tests-105%20passing-brightgreen" alt="tests">
@@ -189,7 +189,8 @@ otherwise load the plugin twice, and backs up every file it edits as `*.bak-dsh-
 1. Install and **enable** it by either route above.
 2. Open the GUI and go to the sidebar's **Plugins → Installed → dsh-mimo-skin**; the plugin's **own
    settings page** sits under the card.
-3. Change what you want and press **Save**; the page repaints at once.
+3. Change what you want; it applies and saves itself once you stop adjusting, and the page repaints at
+   once.
 
 ### Uninstall
 
@@ -235,11 +236,12 @@ In the profile's patch (`profiles/web/cordis.patch.yml`):
 
 You can also skip the YAML and use the plugin's own card instead:
 
-- **Only Save applies a change** (fields do not repaint as you type), and **Restore defaults** writes
-  every appearance field back.
-- **Save validates first**: the colour must be a legal literal, the strength must sit inside 0–1, the
-  height inside 8–200, and the mark's text must not be blank. While something is wrong, Save is
-  greyed out and the field says what is wrong underneath.
+- **There is no Save button**: a change writes itself once you stop adjusting it — after 100 ms for a
+  picker or a switch, after 600 ms for a knob that is typed or stepped — and **Restore defaults**
+  writes every appearance field back.
+- **A write validates first**: the colour must be a legal literal, the strength must sit inside 0–1,
+  the height inside 8–200, and the mark's text must not be blank. While something is wrong nothing is
+  written, and the field says what is wrong underneath.
 - **Changes persist**: values are written into the profile's configuration, so they survive a port
   change, a restart and a switch between the panel and the desktop window; the page keeps no copy.
 - **The three faces are not in the card**: the skin ships no font files, so a hand-typed stack would
@@ -340,7 +342,9 @@ brighter".
 ## Roadmap
 
 - **Released**: `v0.1.0`, the first version; `v0.1.1`, which makes a git install work (`lib/`
-  committed, the build moved from `prepare` to `prepack`).
+  committed, the build moved from `prepare` to `prepack`); `v0.2.0`, which adds `patternHeight` and
+  replaces the card's Save button with a debounced auto-write (100 ms after a pick, 600 ms after a
+  typed or stepped knob).
 - **Planned**: nothing scheduled. The candidates are shipping the fonts (MiSans licensing first) and
   following later revisions of the reference site.
 

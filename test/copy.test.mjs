@@ -52,21 +52,21 @@ test('every string is actually translated', () => {
 })
 
 test('a Chinese page gets the Chinese card, anything else the English one', () => {
-  assert.equal(panelCopy('zh-CN').save, zh.panel.save)
+  assert.equal(panelCopy('zh-CN').reset, zh.panel.reset)
   assert.equal(panelCopy('zh').noteReady, zh.panel.noteReady)
-  assert.equal(panelCopy('en-US').save, en.panel.save)
+  assert.equal(panelCopy('en-US').reset, en.panel.reset)
   // An unlisted language falls back rather than rendering nothing.
-  assert.equal(panelCopy('de').save, en.panel.save)
-  assert.equal(panelCopy('').save, en.panel.save)
+  assert.equal(panelCopy('de').reset, en.panel.reset)
+  assert.equal(panelCopy('').reset, en.panel.reset)
 })
 
 test('the card reads the page language when it is not told one', () => {
   const real = globalThis.navigator
   try {
     Object.defineProperty(globalThis, 'navigator', { value: { language: 'zh-CN' }, configurable: true })
-    assert.equal(panelCopy().save, zh.panel.save)
+    assert.equal(panelCopy().reset, zh.panel.reset)
     Object.defineProperty(globalThis, 'navigator', { value: { language: 'fr' }, configurable: true })
-    assert.equal(panelCopy().save, en.panel.save)
+    assert.equal(panelCopy().reset, en.panel.reset)
   } finally {
     if (real === undefined) delete globalThis.navigator
     else Object.defineProperty(globalThis, 'navigator', { value: real, configurable: true })
